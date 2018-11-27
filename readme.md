@@ -2,7 +2,7 @@
 =====
 1126
 ----
-工程中的源代码保存在code文件夹中，包括moduleOpti优化模块、module0打分模块、module1自动分割模块<br>
+工程中的源代码保存在code文件夹中，包括moduleOpti优化模块、module0打分模块、module1自动分割模块、
 module2手动拼接模块、module3手动分割模块、moduleCrossSeg十字分割模块。<br>
 opencv版本为3.4.0<br>
 dll包括release版本和debug版本<br>
@@ -55,6 +55,8 @@ int ManualSegment(chromo chromoData, vector<chromo>& newChromoDataList, vector<M
 1.打分模块重新拟合<br>
 2.十字交叉分割测试完毕<br>
 
+各个模块接口参数
+-----
 模块0接口函数：打分<br>
 void moduleScoring(Mat originPicture, String pictureType, float & pictureScore, int & singleNum);<br>
 @param<br>
@@ -88,7 +90,7 @@ newCutIndex 新染色体的起始编号，int类型<br>
 chromoData 输出染色体数据结构体，chromo类型<br>
 
 模块3接口函数：手动分割<br>
-int ManualSegment(chromo chromoData, vector<chromo>& newChromoDataList, vector<Mat> allLines, Point clickPosi, int segType, int newCutNum);
+int ManualSegment(chromo chromoData, vector<chromo>& newChromoDataList, vector<Mat> allLines, Point clickPosi, int segType, int newCutNum);<br>
 @param<br>
 chromoData 输入染色体数据结构体，chromo类型<br>
 newChromoDataList 输出染色体数据结构体列表，vector<chromo>类型（每条切出的染色体是一个chromo）<br>

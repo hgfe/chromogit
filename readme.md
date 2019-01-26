@@ -3,18 +3,17 @@
 
 0126
 ----
-1.增加了十字分割moduleCrossSeg的异常处理
-2.增加了dll的版本信息
-3.对流程图进行了更新
-4.自0126版本起，代码更新日志统一放在本文档中管理。
+1.增加了十字分割moduleCrossSeg的异常处理<br>
+2.增加了dll的版本信息<br>
+3.对流程图进行了更新<br>
 
 0123
 ----
-1.修改了module0、module1、moduleOpti的部分算法
-2.增加了代码中的部分异常处理
-3.染色体chromo中的position结构体增加了字段：int cImgBoundingBoxOffset[4]
-作用：cImg旋转并填充之后，需要进行截取才能得到cImgRotated，这个字段表征cImgRotated在截取前图像中的位置。
-4.染色体cImgType字段bool类型改为了int类型，其中0表示交叉染色体cluster，1表示单条染色体single，2表示possible_cluster，顶层可以将2视作1，即为单条染色体
+1.修改了module0、module1、moduleOpti的部分算法<br>
+2.增加了代码中的部分异常处理<br>
+3.染色体chromo中的position结构体增加了字段：int cImgBoundingBoxOffset[4]<br>
+作用：cImg旋转并填充之后，需要进行截取才能得到cImgRotated，这个字段表征cImgRotated在截取前图像中的位置。<br>
+4.染色体cImgType字段bool类型改为了int类型，其中0表示交叉染色体cluster，1表示单条染色体single，2表示possible_cluster，顶层可以将2视作1，即为单条染色体<br>
 
 0105
 ----
@@ -42,6 +41,7 @@ dll包括release版本和debug版本<br>
 2.加入了自动分割的异常处理<br>
 
 1115
+----
 1.对Module优化模块进行了转码；效果有较好提升<br>
 2.修复了自动分割和打分模块的bug<br>
 

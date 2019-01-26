@@ -1,9 +1,21 @@
 染色体项目代码
 =====
 
+0123
+----
+1.修改了module0、module1、moduleOpti的部分算法
+2.增加了代码中的部分异常处理
+3.染色体chromo中的position结构体增加了字段：int cImgBoundingBoxOffset[4]
+作用：cImg旋转并填充之后，需要进行截取才能得到cImgRotated，这个字段表征cImgRotated在截取前图像中的位置。
+4.染色体cImgType字段bool类型改为了int类型，其中0表示交叉染色体cluster，1表示单条染色体single，2表示possible_cluster，顶层可以将2视作1，即为单条染色体
+
+0105
+----
+增加了moduleChooseROI模块
+
 1226
 ----
-修改了module1和module0的接口，修改了module1的去噪部分
+修改了module1和module0的接口，修改了module1的去噪部分，针对去核做了相应修改
 
 1204
 ----

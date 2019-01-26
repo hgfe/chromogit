@@ -11,12 +11,14 @@ using namespace std;
 #define targetW 1600
 
 #define PI 3.1415926
-Mat roughSegChromoRegion(Mat I);
+
+Mat histeq(Mat img, vector<int> hist);
+void roughSegChromoRegion(Mat I, Mat & BWmainbody, Mat & innerCutPoints);
 Mat imgUniform(const Mat imgGray, int& resizeH, int& resizeW);
 Mat imFill(const Mat BW);
 
 Mat clearBorder(const Mat BW);
-vector<int> imhist(Mat &srcImage, unsigned int n);
+vector<int> imhist(Mat &srcImage, unsigned int n = 256);
 void stretchlim(Mat& src, Mat& lowHigh, double tol_low, double tol_high);
 void imadjust(Mat& src, Mat& dst, Mat& lowHighIn, Mat&lowHighOut, double gamma);
 
@@ -37,7 +39,7 @@ void quickSort(vector<int>& arr, int n);
 // //////////////////////
 
 Mat ThiningDIBSkeleton(Mat BW);			// 和 MATLAB 不完全一致
-
+Mat innerCutting(Mat objMask, Mat originalObjI, Mat innerPointsMap, double globalAvg, double minArea);
 // innerCutting 及其相关结构与函数声明
 struct cuttingListStru {
 	Point point1;
@@ -50,13 +52,15 @@ bool compDistAscend(const cuttingListStru & a, const cuttingListStru & b);					/
 Mat findCutLine(cuttingListStru cuttingListEle, Mat originalObjI, Mat objMask);				// 似乎测试无误
 Mat drawThinLine(Point point1, Point point2, Size imgSize);									// 测试无误
 Mat bwareaopen(const Mat BW, const int threshold, const int conn);
-Mat innerCutting(Mat objMask, Mat originalObjI, Mat innerPointsMap, double globalAvg, double minArea);
+
 // /////////////////////////////////////
 
 void findClusters(Mat BW, Mat & singles, Mat & clusters, Mat & bwThin);	// 测试基本无误，骨架有偏差
 Mat imreconstruct(Mat marker, Mat mask);
+Mat cutTouching(Mat objMask, Mat originalObjI, Mat cutPointsMap, double globalAvg, double avgThicknes, double minArea);
+void extendSkeleton(Mat objMask, Mat& skel, vector<Point>& ep, vector<Point>& bp);		// 测试基本无误
 
-// anaskel 及其相关声明，测试无误
+																						// anaskel 及其相关声明，测试无误
 const int connected_nbrs[256] = {
 	0,1,1,1,1,1,1,1,
 	1,2,2,2,1,1,1,1,
@@ -131,22 +135,19 @@ void anaskel(Mat skel, vector<Point>& endPoints, vector<Point>& junctions);
 // ///////////////////////
 
 // 测地距离变换的函数，测试无误
+void findPathNLength(Mat skeletonPath, Point point1, Point point2, Mat& path, int& len);	// 测试无误
 Mat bwdistgeodesic(const Mat src, double  cols, double rows);
 // /////////////////////////////////////
 
 // 获取局部最小值
 void imregionalmin(Mat src, Mat& path, int& len);											// 测试无误
 
-void findPathNLength(Mat skeletonPath, Point point1, Point point2, Mat& path, int& len);	// 测试无误
-
 vector<cuttingListStru> extractCutPointPairs(ConnectedRegion cutPointRegionProps);		// 测试基本无误
 
 vector<cuttingListStru> reduceCuttingList(vector<cuttingListStru> cutPointPairs, Mat skel);		// 测试基本无误
 
-Mat cut(vector<cuttingListStru> cutPointPairs, Mat originalObjI, Mat objMask, 
+Mat cut(vector<cuttingListStru> cutPointPairs, Mat originalObjI, Mat objMask,
 	double globalAvg, double minArea, String logic);	// 测试无误
-
-void extendSkeleton(Mat objMask, Mat& skel, vector<Point>& ep, vector<Point>& bp);		// 测试基本无误
 
 void fitExtention(Point& pointEx, Point point1, Point ref, Size imgSize);	// 测试基本无误
 
@@ -155,12 +156,12 @@ vector<cuttingListStru> findClosestToReference(ConnectedRegion cutPointProps, ve
 double angle3points(Point point1, Point point2, Point point3);		// 测试无误
 
 Mat findAngleChanges(Mat line, Point startPoint);					// 测试基本无误
-// 待测试
-Mat cutTouching(Mat objMask, Mat originalObjI, Mat cutPointsMap, double globalAvg, double avgThicknes, double minArea);
+																	// 待测试
+
 
 Mat imrotate(Mat src, double angle, String model);					// 测试无误
 
-// 以下均为待测试
+																	// 以下均为待测试
 vector<vector<Mat>> separateMultipleOverlapped2new(Mat obj_mask, Mat obj_img, double globalAvg, double minArea);
 vector<Mat> findEnd2EndPathOnSkeleton2(Mat skel, vector<Point> ep);
 void findPointMuiltipleCluster(Mat obj_mask, Mat cutPoints_map, Mat skel, vector<Point> bp, vector<Point> ep,
@@ -173,3 +174,14 @@ vector<Point> extentdPoints(vector<Point>points1, Point ref, double dist, Size i
 
 void dec2bin(int num, int size, Mat & str);
 void findPointsOnSegments_forAngleCalc(Mat skel, double radius, vector<Point>& points_forAngleCalc, vector<Point>& ep, vector<Point>& bp);
+void calcEnvelope(Mat src, Mat& dst);
+Mat bwmorphSpur(Mat src, int n);
+void thinningIteration(Mat& im, int iter);
+void thinning(Mat& im);
+Mat cut3(vector<cuttingListStru> cutPointPairs, Mat originalObjI, Mat objMask,
+	double globalAvg, double minArea, String logic);
+Mat findSkeleton(Mat obj, int thresh, vector<Point> & ep, vector<Point> & bp);
+vector<Mat> findSkelLengthOrder(Mat skeleton, vector<Point> ep, vector<Point> bp);
+
+void preSeg(Mat img, bool bIntensityReverse, bool bCutTouching, int & preSingleNum, int & preSingleArea, int & preSingleEnvelope);
+float ChromoScore(float avgLength, int singleNum);

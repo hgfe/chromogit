@@ -24,7 +24,7 @@ ConnectedRegion::ConnectedRegion(Mat BW, int connectivity) {
 }
 
 // 析构函数定义
-ConnectedRegion::~ConnectedRegion() {	
+ConnectedRegion::~ConnectedRegion() {
 }
 
 // 成员函数定义
@@ -55,7 +55,7 @@ void ConnectedRegion::calculatePixelIdxList() {
 		pixelIdxList_ = pixelIdxList;
 		pixelIdxListTrue_ = true;
 	}
-	
+
 }
 
 void ConnectedRegion::calculatePixelList() {
@@ -93,7 +93,7 @@ void ConnectedRegion::calculateArea() {
 	}
 
 	vector<int> area(connNum_);
-	if(!pixelListTrue_)
+	if (!pixelListTrue_)
 		calculatePixelList();		// attention!!!
 	for (int index = 1; index <= connNum_; index++) {
 		vector<Point> element = pixelList_[index - 1];
@@ -191,6 +191,7 @@ void ConnectedRegion::calculateConvexArea() {
 	convexArea_ = convexArea;
 }
 
+
 void ConnectedRegion::calculateBoundingBox() {
 	if (connNum_ == 0) {
 		return;
@@ -199,11 +200,11 @@ void ConnectedRegion::calculateBoundingBox() {
 	vector<vector<int>> boundingBox(connNum_, vector<int>(4, 0));
 	if (!pixelListTrue_)
 		calculatePixelList();
-	
+
 	for (int index = 1; index <= connNum_; index++) {
 		vector<Point> list = pixelList_[index - 1];
 		vector<int> bb(4, 0);
-		
+
 		int width = 0, height = 0;
 		int minC = list[0].x;
 		int maxC = list[0].x;

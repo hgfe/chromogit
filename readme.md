@@ -1,5 +1,15 @@
 染色体项目代码
 =====
+
+1226
+----
+修改了module1和module0的接口，修改了module1的去噪部分
+
+1204
+----
+修改了module1自动分割模块，针对十字交叉型染色体尽可能按照对角线的形式切割；
+修改了moduleCrossSeg模块中的函数，不影响使用和切割效果
+
 1126
 ----
 工程中的源代码保存在code文件夹中，包括moduleOpti优化模块、module0打分模块、module1自动分割模块、
@@ -58,7 +68,7 @@ int ManualSegment(chromo chromoData, vector<chromo>& newChromoDataList, vector<M
 各个模块接口参数
 -----
 模块0接口函数：打分<br>
-void moduleScoring(Mat originPicture, String pictureType, float & pictureScore, int & singleNum);<br>
+int moduleScoring(Mat originPicture, String pictureType, float & pictureScore, int & singleNum);<br>
 @param<br>
 originPicture 原始图像，Mat类型<br>
 pictureType 图像类型，raw或tif<br>
@@ -66,7 +76,7 @@ pictureScore 输出打分，float类型<br>
 singleNum 单条染色体数量，int类型<br>
 
 模块1接口函数：自动分割<br>
-void moduleSeg(Mat originPicture, String pictureType, String patientId, String glassId, String karyoId,
+int moduleSeg(Mat originPicture, String pictureType, String patientId, String glassId, String karyoId,
 	Mat& optiPicture, String& optiPictureType, vector<chromo>& chromoData);<br>
 @param<br>
 originPicture 原始图像，Mat类型<br>

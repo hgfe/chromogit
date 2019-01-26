@@ -6,6 +6,7 @@
 typedef  struct __declspec(dllexport) position_ {
 	Mat cImgMask;
 	int cImgBoundingBox[4];
+	int cImgBoundingBoxOffset[4];
 	float cImgOrientation;
 } position;
 
@@ -13,7 +14,7 @@ typedef  struct __declspec(dllexport) chromo_ {
 	int index;
 	int relatedIndex;
 	int chromoId;
-	bool cImgType;
+	int cImgType;
 	Mat cImg;
 	Mat cImgRotated;
 	position cImgPosition;
@@ -21,5 +22,5 @@ typedef  struct __declspec(dllexport) chromo_ {
 	int chromoUpright;
 } chromo;
 
-extern "C" __declspec(dllexport) void moduleSeg(Mat originPicture, String pictureType, String patientId, String glassId, String karyoId,
+extern "C" __declspec(dllexport) int moduleSeg(Mat originPicture, String pictureType, String patientId, String glassId, String karyoId,
 	Mat& optiPicture, String& optiPictureType, vector<chromo>& chromoData);

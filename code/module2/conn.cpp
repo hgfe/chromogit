@@ -191,6 +191,7 @@ void ConnectedRegion::calculateConvexArea() {
 	convexArea_ = convexArea;
 }
 
+
 void ConnectedRegion::calculateBoundingBox() {
 	if (connNum_ == 0) {
 		return;

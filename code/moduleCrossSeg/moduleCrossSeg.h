@@ -6,6 +6,7 @@
 typedef  struct __declspec(dllexport) position_ {
 	Mat cImgMask;
 	int cImgBoundingBox[4];
+	int cImgBoundingBoxOffset[4];
 	float cImgOrientation;
 } position;
 
@@ -13,7 +14,7 @@ typedef  struct __declspec(dllexport) chromo_ {
 	int index;
 	int relatedIndex;
 	int chromoId;
-	bool cImgType;
+	int cImgType;
 	Mat cImg;
 	Mat cImgRotated;
 	position cImgPosition;

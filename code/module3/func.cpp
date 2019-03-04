@@ -931,6 +931,8 @@ Mat getCutPoints(Mat objMask, double paramCurv, double paramAngle, String logic)
 	vector<vector<Point>> contours;
 	vector<Vec4i> hierarchy;
 	findContours(objMask, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE, Point(0, 0));
+	if (contours.empty())
+		return cutPointsMap;
 
 	int jumpCurve = 4, jumpAngle = 8;
 	int nLen = contours[0].size();
@@ -3456,7 +3458,7 @@ Mat findSkeleton(Mat obj, int thresh, vector<Point> & ep, vector<Point> & bp) {
 
 				vector<Point> chosenPixelList = sExtCrossingPoints.pixelList_[chosen - 1];
 				for (int n = 0; n < chosenPixelList.size(); n++) {
-					tmp.at<uchar>(chosenPixelList[n]) = 0;
+					tmp.at<uchar>(chosenPixelList[n].x, chosenPixelList[n].y) = 0;
 				}
 				skelExt = skelExt - tmp;
 			}

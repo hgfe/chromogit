@@ -1,10 +1,10 @@
-// all the functions in project Chromosome
+ï»¿// all the functions in project Chromosome
 // 20190112
 #include "stdafx.h"
 #include "main.h"
 #include "conn.h"
 
-// 1.Ö±·½Í¼Æ¥Åä
+// 1.ç›´æ–¹å›¾åŒ¹é…
 Mat histeq(Mat img, vector<int> hist) {
 	Mat imgEq = Mat::zeros(img.size(), CV_8UC1);
 	vector<int> originHist = imhist(img, 256);
@@ -53,7 +53,7 @@ Mat histeq(Mat img, vector<int> hist) {
 	return imgEq;
 }
 
-// 2.´Ö·Ö¸î
+// 2.ç²—åˆ†å‰²
 void roughSegChromoRegion(Mat I, Mat & BWmainbody, Mat & innerCutPoints) {
 	int resizeH = I.rows, resizeW = I.cols;
 
@@ -73,12 +73,12 @@ void roughSegChromoRegion(Mat I, Mat & BWmainbody, Mat & innerCutPoints) {
 	Mat BW2 = 255 * Mat::ones(I.size(), CV_8UC1);
 	BW2 = BW2 - BW;
 	BW2 = clearBorder(BW2);
-	innerCutPoints = bwareaopen(BW2, 25, 4);			// ÕâÀïÊÇÁíÒ»¸öÊä³ö
+	innerCutPoints = bwareaopen(BW2, 25, 4);			// è¿™é‡Œæ˜¯å¦ä¸€ä¸ªè¾“å‡º
 
 	BW = imFill(BW);
 	bitwise_and(BW, 0, BW, innerCutPoints);
 
-	BWmainbody = bwareaopen(BW, 50, 4);					// ÕâÀïÊÇÊä³ö
+	BWmainbody = bwareaopen(BW, 50, 4);					// è¿™é‡Œæ˜¯è¾“å‡º
 	Mat BW_suiti = BW - BWmainbody;
 
 	Mat BW5 = Mat::zeros(BWmainbody.size(), CV_8UC1);
@@ -125,14 +125,14 @@ void roughSegChromoRegion(Mat I, Mat & BWmainbody, Mat & innerCutPoints) {
 	return;
 }
 
-// 3.Ô¤´¦Àí£¬±ê×¼»¯
+// 3.é¢„å¤„ç†ï¼Œæ ‡å‡†åŒ–
 Mat imgUniform(const Mat imgGray, int& resizeH, int& resizeW) {
 
 	int origH = imgGray.rows;
 	int origW = imgGray.cols;
 
 	/////////////////////////////////////////////////////////////
-	///////////////////// resize Í¼Ïñ ///////////////////////////
+	///////////////////// resize å›¾åƒ ///////////////////////////
 	Size dsize = Size(targetW, targetH);
 	Mat scalingImgGray;
 	resize(imgGray, scalingImgGray, dsize, 0.0, 0.0, INTER_CUBIC);
@@ -152,7 +152,7 @@ Mat imgUniform(const Mat imgGray, int& resizeH, int& resizeW) {
 			histo[255] = 0;
 		maxValue = *(max_element(histo.begin(), histo.end()));
 		vector<int>::iterator maxIter = max_element(histo.begin(), histo.end());
-		int maxIndex = distance(histo.begin(), maxIter);				// maxIndex ¼´Îª peak
+		int maxIndex = distance(histo.begin(), maxIter);				// maxIndex å³ä¸º peak
 
 		vector<int> tmp(histo.begin() + maxIndex + 1, histo.end());
 
@@ -221,7 +221,7 @@ Mat imgUniform(const Mat imgGray, int& resizeH, int& resizeW) {
 
 	bitwise_or(img2, 255, img2, BW4);
 
-	//1223ĞÂÔö
+	//1223æ–°å¢
 
 	Mat BW5 = Mat::zeros(img2.size(), CV_8UC1);
 	threshold(img2, BW5, 160, 255, THRESH_BINARY);
@@ -238,7 +238,7 @@ Mat imgUniform(const Mat imgGray, int& resizeH, int& resizeW) {
 	return img2;
 }
 
-// 4.¿Õ¶´Ìî³ä
+// 4.ç©ºæ´å¡«å……
 Mat imFill(const Mat BW) {
 	Size originSize = BW.size();
 	Mat temp = Mat::zeros(originSize.height + 2, originSize.width + 2, BW.type());
@@ -250,7 +250,7 @@ Mat imFill(const Mat BW) {
 	return BW | (cutImg_not);
 }
 
-// 5.Çå³ıÓë±ß½çÏàÁ¬µÄÁ¬Í¨Óò£¬Ã»ÓĞ°´ÕÕ matlab Ô­º¯ÊıÔ­ÀíÊµÏÖ
+// 5.æ¸…é™¤ä¸è¾¹ç•Œç›¸è¿çš„è¿é€šåŸŸï¼Œæ²¡æœ‰æŒ‰ç…§ matlab åŸå‡½æ•°åŸç†å®ç°
 Mat clearBorder(const Mat BW) {
 	Mat BW1 = BW.clone();
 
@@ -260,7 +260,7 @@ Mat clearBorder(const Mat BW) {
 	return BW1;
 }
 
-// 6.Ö±·½Í¼Í³¼Æ
+// 6.ç›´æ–¹å›¾ç»Ÿè®¡
 vector<int> imhist(Mat &srcImage, unsigned int n) {
 	CV_Assert(srcImage.channels() == 1);
 	vector<int> hist(n, 0);
@@ -280,7 +280,7 @@ vector<int> imhist(Mat &srcImage, unsigned int n) {
 	return hist;
 }
 
-// 7.¶Ô±È¶ÈÀ­Éì
+// 7.å¯¹æ¯”åº¦æ‹‰ä¼¸
 void stretchlim(Mat& src, Mat& lowHigh, double tol_low = 0.01, double tol_high = 0.99)
 {
 	CV_Assert(tol_low <= tol_high);
@@ -296,18 +296,18 @@ void stretchlim(Mat& src, Mat& lowHigh, double tol_low = 0.01, double tol_high =
 	{
 		nbins = 65536;
 	}
-	//Í¨µÀ·ÖÀë
+	//é€šé“åˆ†ç¦»
 	vector<Mat> channels;
 	split(src, channels);
 
 
 	for (int i = 0; i < channelNum; i++)
 	{
-		//»ñÈ¡»Ò¶ÈÍ³¼ÆĞÅÏ¢
+		//è·å–ç°åº¦ç»Ÿè®¡ä¿¡æ¯
 		double low = 0, high = 1;
 		auto hist = imhist(channels[i]);
 		auto toltalSize = std::accumulate(hist.begin(), hist.end(), 0);
-		//µÃµ½ >tol_lowµÄ·Ö²¼¸ÅÂÊµÄ»Ò¶ÈµÈ¼¶
+		//å¾—åˆ° >tol_lowçš„åˆ†å¸ƒæ¦‚ç‡çš„ç°åº¦ç­‰çº§
 		for (int j = 0; j < hist.size(); ++j)
 		{
 			auto sum = std::accumulate(hist.begin(), hist.begin() + j, 0.0);
@@ -317,7 +317,7 @@ void stretchlim(Mat& src, Mat& lowHigh, double tol_low = 0.01, double tol_high =
 				break;
 			}
 		}
-		//µÃµ½ >tol_highµÄ·Ö²¼¸ÅÂÊµÄ»Ò¶ÈµÈ¼¶
+		//å¾—åˆ° >tol_highçš„åˆ†å¸ƒæ¦‚ç‡çš„ç°åº¦ç­‰çº§
 		for (int k = 0; k < hist.size(); ++k)
 		{
 			auto sum = std::accumulate(hist.begin(), hist.begin() + k, 0.0);
@@ -341,7 +341,7 @@ void stretchlim(Mat& src, Mat& lowHigh, double tol_low = 0.01, double tol_high =
 	return;
 }
 
-// 8.¶Ô±È¶Èµ÷Õû
+// 8.å¯¹æ¯”åº¦è°ƒæ•´
 void imadjust(Mat& src, Mat& dst, Mat& lowHighIn, Mat&lowHighOut, double gamma = 1)
 {
 	CV_Assert(src.data != NULL);
@@ -350,12 +350,12 @@ void imadjust(Mat& src, Mat& dst, Mat& lowHighIn, Mat&lowHighOut, double gamma =
 	int rowNum = src.rows;
 	int colNum = src.cols;
 
-	//Í¨µÀ·ÖÀë
+	//é€šé“åˆ†ç¦»
 	vector<Mat> channels;
 	split(src, channels);
 
 
-	//ÉèÖÃÄ¬ÈÏÖµ
+	//è®¾ç½®é»˜è®¤å€¼
 	if (lowHighIn.data == NULL)
 	{
 		lowHighIn = Mat::zeros(chl, 2, CV_64F);
@@ -375,7 +375,7 @@ void imadjust(Mat& src, Mat& dst, Mat& lowHighIn, Mat&lowHighOut, double gamma =
 	}
 	for (int m = 0; m < chl; m++)
 	{
-		//gammaĞ£Õı²é±í
+		//gammaæ ¡æ­£æŸ¥è¡¨
 		vector<double> lookuptable(256, 0);
 		vector<uchar> img(256, 0);
 		for (int i = 0; i < 256; i++)
@@ -406,7 +406,7 @@ void imadjust(Mat& src, Mat& dst, Mat& lowHighIn, Mat&lowHighOut, double gamma =
 	return;
 }
 
-// 9.¶şÖµÍ¼ÏñÌáÈ¡¹Ç¼Ü
+// 9.äºŒå€¼å›¾åƒæå–éª¨æ¶
 Mat skeleton(const Mat BW) {
 	int nrow = BW.rows, ncol = BW.cols;
 
@@ -602,10 +602,10 @@ Mat skeleton(const Mat BW) {
 	return skr;
 }
 
-// 10.ÌáÈ¡Á¬Í¨ÓòĞÅÏ¢
+// 10.æå–è¿é€šåŸŸä¿¡æ¯
 int jointNeighborhood(const Mat img, const int rowIdx, const int colIdx) {
-	// ÊäÈë img Í¼ÏñÖĞÖ¸¶¨ rowIdx ºÍ colIdx Î»ÖÃµÄÏñËØµã
-	// ·µ»ØÕâ¸öÏñËØµãµÄ 8 Á¬Í¨ÇøÓòµÄĞÅÏ¢
+	// è¾“å…¥ img å›¾åƒä¸­æŒ‡å®š rowIdx å’Œ colIdx ä½ç½®çš„åƒç´ ç‚¹
+	// è¿”å›è¿™ä¸ªåƒç´ ç‚¹çš„ 8 è¿é€šåŒºåŸŸçš„ä¿¡æ¯
 	int nrow = img.rows, ncol = img.cols;
 	int condition = 8 * (rowIdx <= 0) + 4 * (colIdx <= 0) + 2 * (rowIdx >= nrow) + (colIdx >= ncol);
 
@@ -651,7 +651,7 @@ int jointNeighborhood(const Mat img, const int rowIdx, const int colIdx) {
 	}
 }
 
-// 11.ÕûĞÍÈİÆ÷¿ìËÙÅÅĞò
+// 11.æ•´å‹å®¹å™¨å¿«é€Ÿæ’åº
 void quickSort(vector<int>& arr, int n) {
 	if (n > 8) {
 		int pivot;
@@ -705,14 +705,14 @@ void quickSort(vector<int>& arr, int n) {
 	}
 }
 
-// 12.Ï¸»¯Ëã·¨
+// 12.ç»†åŒ–ç®—æ³•
 Mat ThiningDIBSkeleton(Mat BW) {
-	// »ùÓÚË÷Òı±íµÄÏ¸»¯Ëã·¨
-	// ¹¦ÄÜ£º¶ÔÍ¼Ïó½øĞĞÏ¸»¯£¬¼´ MATLAB ÖĞ bwdist(BW, 'skel', inf)
+	// åŸºäºç´¢å¼•è¡¨çš„ç»†åŒ–ç®—æ³•
+	// åŠŸèƒ½ï¼šå¯¹å›¾è±¡è¿›è¡Œç»†åŒ–ï¼Œå³ MATLAB ä¸­ bwdist(BW, 'skel', inf)
 	int lWidth = BW.cols;
 	int lHeight = BW.rows;
 	uchar * lpDIBBits = new uchar[sizeof(char) * BW.rows * BW.cols];
-	// ÌáÈ¡Í¼ÏñimageDataÊı×é
+	// æå–å›¾åƒimageDataæ•°ç»„
 	for (int row = 0; row < lHeight; row++)
 	{
 		uchar* ptr = BW.ptr<uchar>(row);
@@ -723,12 +723,12 @@ Mat ThiningDIBSkeleton(Mat BW) {
 		}
 	}
 
-	//Ñ­»·±äÁ¿
+	//å¾ªç¯å˜é‡
 	long i;
 	long j;
 	long lLength;
 
-	unsigned char deletemark[256] = {      // Õâ¸ö¼´ÎªÇ°ÈË¾İ8ÁìÓò×Ü½áµÄÊÇ·ñ¿ÉÒÔ±»É¾³ıµÄ256ÖÖÇé¿ö
+	unsigned char deletemark[256] = {      // è¿™ä¸ªå³ä¸ºå‰äººæ®8é¢†åŸŸæ€»ç»“çš„æ˜¯å¦å¯ä»¥è¢«åˆ é™¤çš„256ç§æƒ…å†µ
 		0,0,0,0,0,0,0,1,	0,0,1,1,0,0,1,1,
 		0,0,0,0,0,0,0,0,	0,0,1,1,1,0,1,1,
 		0,0,0,0,0,0,0,0,	1,0,0,0,1,0,1,1,
@@ -745,14 +745,14 @@ Mat ThiningDIBSkeleton(Mat BW) {
 		0,0,0,0,0,0,0,0,	0,0,0,0,0,1,1,1,
 		1,1,1,1,0,0,1,1,	1,1,0,0,1,1,0,0,
 		1,1,1,1,0,0,1,1,	1,1,0,0,1,1,0,0
-	};//Ë÷Òı±í
+	};//ç´¢å¼•è¡¨
 
 	unsigned char p0, p1, p2, p3, p4, p5, p6, p7;
-	unsigned char *pmid, *pmidtemp;    // pmid ÓÃÀ´Ö¸Ïò¶şÖµÍ¼Ïñ  pmidtempÓÃÀ´Ö¸Ïò´æ·ÅÊÇ·ñÎª±ßÔµ
+	unsigned char *pmid, *pmidtemp;    // pmid ç”¨æ¥æŒ‡å‘äºŒå€¼å›¾åƒ  pmidtempç”¨æ¥æŒ‡å‘å­˜æ”¾æ˜¯å¦ä¸ºè¾¹ç¼˜
 	unsigned char sum;
 	bool bStart = true;
 	lLength = lWidth * lHeight;
-	unsigned char *pTemp = new uchar[sizeof(unsigned char) * lWidth * lHeight]();  //¶¯Ì¬´´½¨Êı×é ²¢ÇÒ³õÊ¼»¯
+	unsigned char *pTemp = new uchar[sizeof(unsigned char) * lWidth * lHeight]();  //åŠ¨æ€åˆ›å»ºæ•°ç»„ å¹¶ä¸”åˆå§‹åŒ–
 
 																				   //    P0 P1 P2
 																				   //    P7    P3
@@ -762,15 +762,15 @@ Mat ThiningDIBSkeleton(Mat BW) {
 	{
 		bStart = false;
 
-		//Ê×ÏÈÇó±ßÔµµã
+		//é¦–å…ˆæ±‚è¾¹ç¼˜ç‚¹
 		pmid = (unsigned char *)lpDIBBits + lWidth + 1;
 		memset(pTemp, 0, lLength);
-		pmidtemp = (unsigned char *)pTemp + lWidth + 1; //  Èç¹ûÊÇ±ßÔµµã Ôò½«ÆäÉèÎª1
+		pmidtemp = (unsigned char *)pTemp + lWidth + 1; //  å¦‚æœæ˜¯è¾¹ç¼˜ç‚¹ åˆ™å°†å…¶è®¾ä¸º1
 		for (i = 1; i < lHeight - 1; i++)
 		{
 			for (j = 1; j < lWidth - 1; j++)
 			{
-				if (*pmid == 0)                   //ÊÇ0 ²»ÊÇÎÒÃÇĞèÒª¿¼ÂÇµÄµã
+				if (*pmid == 0)                   //æ˜¯0 ä¸æ˜¯æˆ‘ä»¬éœ€è¦è€ƒè™‘çš„ç‚¹
 				{
 					pmid++;
 					pmidtemp++;
@@ -787,7 +787,7 @@ Mat ThiningDIBSkeleton(Mat BW) {
 				sum = p0 & p1 & p2 & p3 & p4 & p5 & p6 & p7;
 				if (sum == 0)
 				{
-					*pmidtemp = 1;       // ÕâÑùÖÜÎ§8¸ö¶¼ÊÇ1µÄÊ±ºò  pmidtemp==1 ±íÃ÷ÊÇ±ßÔµ     					
+					*pmidtemp = 1;       // è¿™æ ·å‘¨å›´8ä¸ªéƒ½æ˜¯1çš„æ—¶å€™  pmidtemp==1 è¡¨æ˜æ˜¯è¾¹ç¼˜     					
 				}
 
 				pmid++;
@@ -799,15 +799,15 @@ Mat ThiningDIBSkeleton(Mat BW) {
 			pmidtemp++;
 		}
 
-		//ÏÖÔÚ¿ªÊ¼É¾³ı
+		//ç°åœ¨å¼€å§‹åˆ é™¤
 		pmid = (unsigned char *)lpDIBBits + lWidth + 1;
 		pmidtemp = (unsigned char *)pTemp + lWidth + 1;
 
-		for (i = 1; i < lHeight - 1; i++)   // ²»¿¼ÂÇÍ¼ÏñµÚÒ»ĞĞ µÚÒ»ÁĞ ×îºóÒ»ĞĞ ×îºóÒ»ÁĞ
+		for (i = 1; i < lHeight - 1; i++)   // ä¸è€ƒè™‘å›¾åƒç¬¬ä¸€è¡Œ ç¬¬ä¸€åˆ— æœ€åä¸€è¡Œ æœ€åä¸€åˆ—
 		{
 			for (j = 1; j < lWidth - 1; j++)
 			{
-				if (*pmidtemp == 0)     //1±íÃ÷ÊÇ±ßÔµ 0--ÖÜÎ§8¸ö¶¼ÊÇ1 ¼´ÎªÖĞ¼äµãÔİ²»Óè¿¼ÂÇ
+				if (*pmidtemp == 0)     //1è¡¨æ˜æ˜¯è¾¹ç¼˜ 0--å‘¨å›´8ä¸ªéƒ½æ˜¯1 å³ä¸ºä¸­é—´ç‚¹æš‚ä¸äºˆè€ƒè™‘
 				{
 					pmid++;
 					pmidtemp++;
@@ -836,7 +836,7 @@ Mat ThiningDIBSkeleton(Mat BW) {
 				if (deletemark[sum] == 1)
 				{
 					*pmid = 0;
-					bStart = true;      //  ±íÃ÷±¾´ÎÉ¨Ãè½øĞĞÁËÏ¸»¯
+					bStart = true;      //  è¡¨æ˜æœ¬æ¬¡æ‰«æè¿›è¡Œäº†ç»†åŒ–
 				}
 				pmid++;
 				pmidtemp++;
@@ -861,7 +861,7 @@ Mat ThiningDIBSkeleton(Mat BW) {
 	return skeleton;
 }
 
-// 13.ÄÚ²¿²Ã¼ô
+// 13.å†…éƒ¨è£å‰ª
 Mat innerCutting(Mat objMask, Mat originalObjI, Mat innerPointsMap, double globalAvg, double minArea) {
 	Mat obj1 = Mat::zeros(objMask.size(), CV_8UC1);
 
@@ -924,13 +924,15 @@ Mat innerCutting(Mat objMask, Mat originalObjI, Mat innerPointsMap, double globa
 	return obj1;
 }
 
-// 14.»ñÈ¡ÇĞ¸îµã
+// 14.è·å–åˆ‡å‰²ç‚¹
 Mat getCutPoints(Mat objMask, double paramCurv, double paramAngle, String logic) {
 	Mat cutPointsMap;
 
 	vector<vector<Point>> contours;
 	vector<Vec4i> hierarchy;
 	findContours(objMask, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE, Point(0, 0));
+	if (contours.empty())
+		return cutPointsMap;
 
 	int jumpCurve = 4, jumpAngle = 8;
 	int nLen = contours[0].size();
@@ -949,8 +951,8 @@ Mat getCutPoints(Mat objMask, double paramCurv, double paramAngle, String logic)
 	////////////////////////////////////////////////////////////////////////
 	///////////////////curvature detection//////////////////////////////////
 	vector<Point> boundaryPointsCurve(boundaryPoints);
-	// ÔÚÄ©Î²²åÈë×îÇ°Ãæ jumpCurve ¸öÔªËØ
-	// ÔÚ×îÇ°Ãæ²åÈëÄ©Î² jumpCuve ¸öÔªËØ
+	// åœ¨æœ«å°¾æ’å…¥æœ€å‰é¢ jumpCurve ä¸ªå…ƒç´ 
+	// åœ¨æœ€å‰é¢æ’å…¥æœ«å°¾ jumpCuve ä¸ªå…ƒç´ 
 	for (int idx = 1; idx <= jumpCurve; idx++) {
 		Point forward = boundaryPoints[idx - 1];
 		Point behind = boundaryPoints[nLen - jumpCurve + idx - 1];
@@ -961,10 +963,10 @@ Mat getCutPoints(Mat objMask, double paramCurv, double paramAngle, String logic)
 	Mat curvaturePoints = Mat::zeros(objMask.size(), CV_8UC1);
 	for (int idx = 1 + jumpCurve; idx <= nLen + jumpCurve; idx++) {
 
-		// boundaryPointsCurve ÖĞÃ¿¸ö Point µÄ x ÊÇÁĞÏÂ±ê£¬ y ÊÇĞĞÏÂ±ê
-		// ÕâÀï·´¹ıÀ´ÊÇÎªÁËºÍ MATLAB ±£³ÖÒ»ÖÂ
-		// ¼ÓÒ»ÊÇÒòÎª MATLAB ÏÂ±êË÷Òı´Ó 1 ¿ªÊ¼
-		// ÊıÖµÉÏ±£³ÖÒ»ÖÂ
+		// boundaryPointsCurve ä¸­æ¯ä¸ª Point çš„ x æ˜¯åˆ—ä¸‹æ ‡ï¼Œ y æ˜¯è¡Œä¸‹æ ‡
+		// è¿™é‡Œåè¿‡æ¥æ˜¯ä¸ºäº†å’Œ MATLAB ä¿æŒä¸€è‡´
+		// åŠ ä¸€æ˜¯å› ä¸º MATLAB ä¸‹æ ‡ç´¢å¼•ä» 1 å¼€å§‹
+		// æ•°å€¼ä¸Šä¿æŒä¸€è‡´
 		int x1 = boundaryPointsCurve[idx - jumpCurve - 1].x + 1;
 		int y1 = boundaryPointsCurve[idx - jumpCurve - 1].y + 1;
 		int x2 = boundaryPointsCurve[idx - 1].x + 1;
@@ -972,7 +974,7 @@ Mat getCutPoints(Mat objMask, double paramCurv, double paramAngle, String logic)
 		int x3 = boundaryPointsCurve[idx + jumpCurve - 1].x + 1;
 		int y3 = boundaryPointsCurve[idx + jumpCurve - 1].y + 1;
 
-		// ×¢ÒâÕâÀïÒª ¼õ¶ş£¬×ø±êË÷Òı²»ÄÜ´í
+		// æ³¨æ„è¿™é‡Œè¦ å‡äºŒï¼Œåæ ‡ç´¢å¼•ä¸èƒ½é”™
 		if (objMask.at<uchar>((y1 + y3 - 2) / 2, (x1 + x3 - 2) / 2) == 0) {
 			double curvature =
 				(double)(2 * ABS((x2 - x1) * (y3 - y1) - (x3 - x1) * (y2 - y1))) /
@@ -990,8 +992,8 @@ Mat getCutPoints(Mat objMask, double paramCurv, double paramAngle, String logic)
 	///////////////////////////////////////////////////////////////////////
 	/////////////calculate angular changes along boundary//////////////////
 	vector<Point> boundaryPointsAngle(boundaryPoints);
-	// ÔÚÄ©Î²²åÈë×îÇ°Ãæ jumpAngle ¸öÔªËØ
-	// ÔÚ×îÇ°Ãæ²åÈëÄ©Î² jumpAngle ¸öÔªËØ
+	// åœ¨æœ«å°¾æ’å…¥æœ€å‰é¢ jumpAngle ä¸ªå…ƒç´ 
+	// åœ¨æœ€å‰é¢æ’å…¥æœ«å°¾ jumpAngle ä¸ªå…ƒç´ 
 	for (int idx = 1; idx <= jumpAngle; idx++) {
 		Point forward = boundaryPoints[idx - 1];
 		Point behind = boundaryPoints[nLen - jumpAngle + idx - 1];
@@ -1002,10 +1004,10 @@ Mat getCutPoints(Mat objMask, double paramCurv, double paramAngle, String logic)
 	Mat angleChanges = Mat::zeros(objMask.size(), CV_8UC1);
 	for (int idx = 1 + jumpAngle; idx <= nLen + jumpAngle; idx++) {
 
-		// boundaryPointsAngle ÖĞÃ¿¸ö Point µÄ x ÊÇÁĞÏÂ±ê£¬ y ÊÇĞĞÏÂ±ê
-		// ÕâÀï·´¹ıÀ´ÊÇÎªÁËºÍ MATLAB ±£³ÖÒ»ÖÂ
-		// ¼ÓÒ»ÊÇÒòÎª MATLAB ÏÂ±êË÷Òı´Ó 1 ¿ªÊ¼
-		// ÊıÖµÉÏ±£³ÖÒ»ÖÂ
+		// boundaryPointsAngle ä¸­æ¯ä¸ª Point çš„ x æ˜¯åˆ—ä¸‹æ ‡ï¼Œ y æ˜¯è¡Œä¸‹æ ‡
+		// è¿™é‡Œåè¿‡æ¥æ˜¯ä¸ºäº†å’Œ MATLAB ä¿æŒä¸€è‡´
+		// åŠ ä¸€æ˜¯å› ä¸º MATLAB ä¸‹æ ‡ç´¢å¼•ä» 1 å¼€å§‹
+		// æ•°å€¼ä¸Šä¿æŒä¸€è‡´
 		int x1 = boundaryPointsAngle[idx - jumpAngle - 1].x + 1;
 		int y1 = boundaryPointsAngle[idx - jumpAngle - 1].y + 1;
 		int x2 = boundaryPointsAngle[idx - 1].x + 1;
@@ -1050,10 +1052,10 @@ Mat getCutPoints(Mat objMask, double paramCurv, double paramAngle, String logic)
 	return cutPointsMap;
 }
 
-// 15.»ñÈ¡×î¶Ì¾àÀë
+// 15.è·å–æœ€çŸ­è·ç¦»
 cuttingListStru pDist2(const vector<Point>pointList1, const vector<Point>pointList2) {
-	// ÕÒÁ½¸övector<Point>Ö®¼ä×î½üµÄÁ½¸öµã pdist2(points1, points2)
-	// ·µ»Ø½á¹¹Ìå£¬±£´æÁ½¸öµãºÍÆä¾àÀë
+	// æ‰¾ä¸¤ä¸ªvector<Point>ä¹‹é—´æœ€è¿‘çš„ä¸¤ä¸ªç‚¹ pdist2(points1, points2)
+	// è¿”å›ç»“æ„ä½“ï¼Œä¿å­˜ä¸¤ä¸ªç‚¹å’Œå…¶è·ç¦»
 	double minDist = norm(Mat(pointList1[0]), Mat(pointList2[0]));
 	cuttingListStru nearest;
 	nearest.point1 = pointList1[0];
@@ -1078,12 +1080,12 @@ cuttingListStru pDist2(const vector<Point>pointList1, const vector<Point>pointLi
 	return nearest;
 }
 
-// 16.½á¹¹Ìå±È½Ï
+// 16.ç»“æ„ä½“æ¯”è¾ƒ
 bool compDistAscend(const cuttingListStru & a, const cuttingListStru & b) {
 	return a.dist < b.dist;
 }
 
-// 17.Ñ°ÕÒÇĞ¸îÏß
+// 17.å¯»æ‰¾åˆ‡å‰²çº¿
 Mat findCutLine(cuttingListStru cuttingListEle, Mat originalObjI, Mat objMask) {
 	Mat cutLine = Mat::zeros(objMask.size(), CV_8UC1);
 
@@ -1104,7 +1106,7 @@ Mat findCutLine(cuttingListStru cuttingListEle, Mat originalObjI, Mat objMask) {
 		Mat circleContour = Mat::zeros(objMask.size(), CV_8UC1);
 		circle(circleContour, Point(point1.y, point1.x), radius, Scalar::all(255));
 
-		vector<cuttingListStru> candidatesPointDist; // Ã¿¸ö struct ÖĞ point1 ´æµÄÊÇÄ¿±êµã
+		vector<cuttingListStru> candidatesPointDist; // æ¯ä¸ª struct ä¸­ point1 å­˜çš„æ˜¯ç›®æ ‡ç‚¹
 		for (int row = 0; row < circleContour.rows; row++) {
 			uchar * rowPt = circleContour.ptr<uchar>(row);
 			for (int col = 0; col < circleContour.cols; col++) {
@@ -1156,13 +1158,13 @@ Mat findCutLine(cuttingListStru cuttingListEle, Mat originalObjI, Mat objMask) {
 	return cutLine;
 }
 
-// 18.»­Ï¸Ïß
+// 18.ç”»ç»†çº¿
 Mat drawThinLine(Point point1, Point point2, Size imgSize) {
-	// »­Ïß
-	// ×¢Òâ dilate ºÍ hitmiss ²Ù×÷µÄ kernel
-	// ÕâÀïºÜÆæ¹ÖµØ£¬OPENCV ºÍ MATLAB µÄ½á¹û²»Ò»Ñù
-	// Òò´Ë×öÁËÒ»Ğ©ĞŞ¸Ä
-	// »¹ĞèÒª½øÒ»²½²âÊÔÈ·±£ÈÎºÎÇé¿öÏÂ¶¼ÏàÍ¬
+	// ç”»çº¿
+	// æ³¨æ„ dilate å’Œ hitmiss æ“ä½œçš„ kernel
+	// è¿™é‡Œå¾ˆå¥‡æ€ªåœ°ï¼ŒOPENCV å’Œ MATLAB çš„ç»“æœä¸ä¸€æ ·
+	// å› æ­¤åšäº†ä¸€äº›ä¿®æ”¹
+	// è¿˜éœ€è¦è¿›ä¸€æ­¥æµ‹è¯•ç¡®ä¿ä»»ä½•æƒ…å†µä¸‹éƒ½ç›¸åŒ
 	Mat thinLine = Mat::zeros(imgSize, CV_8UC1);
 
 	line(thinLine, Point(point1.y, point1.x), Point(point2.y, point2.x), Scalar::all(255));
@@ -1199,11 +1201,11 @@ Mat drawThinLine(Point point1, Point point2, Size imgSize) {
 	return thinLine;
 }
 
-// 19.Ğ¡Á¬Í¨ÇøÓòÉ¾³ı
+// 19.å°è¿é€šåŒºåŸŸåˆ é™¤
 Mat bwareaopen(const Mat BW, const int threshold, const int conn) {
-	// ÕâÀïÊµÏÖµÄÔ­ÀíÊÇÕÒÂÖÀª£¬ÂÖÀª°üÂçÃæ»ıĞ¡ÓÚ threshold µÄÔò²Á³ı
-	// MATLAB µÄÔ­Àí£¬ÕÒÁ¬Í¨Óò£¬Á¬Í¨ÓòÃæ»ıĞ¡ÓÚ threshold µÄÔò²Á³ı
-	// ĞŞ¸ÄÁË
+	// è¿™é‡Œå®ç°çš„åŸç†æ˜¯æ‰¾è½®å»“ï¼Œè½®å»“åŒ…ç»œé¢ç§¯å°äº threshold çš„åˆ™æ“¦é™¤
+	// MATLAB çš„åŸç†ï¼Œæ‰¾è¿é€šåŸŸï¼Œè¿é€šåŸŸé¢ç§¯å°äº threshold çš„åˆ™æ“¦é™¤
+	// ä¿®æ”¹äº†
 	Mat BW1 = Mat::zeros(Size(BW.cols, BW.rows), CV_8UC1);
 
 	ConnectedRegion CCbw(BW, conn);
@@ -1226,7 +1228,7 @@ Mat bwareaopen(const Mat BW, const int threshold, const int conn) {
 	return BW1;
 }
 
-// 20.Ñ°ÕÒcluster
+// 20.å¯»æ‰¾cluster
 void findClusters(Mat BW, Mat & singles, Mat & clusters, Mat & bwThin) {
 	Mat skr = skeleton(BW);
 
@@ -1251,7 +1253,7 @@ void findClusters(Mat BW, Mat & singles, Mat & clusters, Mat & bwThin) {
 	return;
 }
 
-// 21.ÖØ½¨
+// 21.é‡å»º
 Mat imreconstruct(Mat marker, Mat mask) {
 	Mat dst;
 	cv::min(marker, mask, dst);
@@ -1269,7 +1271,7 @@ Mat imreconstruct(Mat marker, Mat mask) {
 	return dst;
 }
 
-// 22.½Ó´¥È¾É«ÌåÇĞ¸î
+// 22.æ¥è§¦æŸ“è‰²ä½“åˆ‡å‰²
 Mat cutTouching(Mat objMask, Mat originalObjI, Mat cutPointsMap, double globalAvg, double avgThicknes, double minArea) {
 
 	Mat skr = skeleton(objMask);
@@ -1295,11 +1297,11 @@ Mat cutTouching(Mat objMask, Mat originalObjI, Mat cutPointsMap, double globalAv
 		vector<cuttingListStru> cutPointPairs = extractCutPointPairs(cutPointRegionProps);
 		vector<cuttingListStru> validCutPointPairs = reduceCuttingList(cutPointPairs, skel);
 
-		// ±£ÁôÇĞ¸îµã¶ÔµÄ¾àÀëÔÚÒ»¶¨·¶Î§ÄÚµÄÇĞ¸îµã¶Ô
+		// ä¿ç•™åˆ‡å‰²ç‚¹å¯¹çš„è·ç¦»åœ¨ä¸€å®šèŒƒå›´å†…çš„åˆ‡å‰²ç‚¹å¯¹
 		int numValidPairs = validCutPointPairs.size();
 		vector<cuttingListStru> distValidCutPointPairs(validCutPointPairs);
 		for (int i = 0; i < numValidPairs; i++) {
-			int distThresh = round(avgThicknes / 3 * 2) * 5 / 2;	// ¾àÀëãĞÖµ
+			int distThresh = round(avgThicknes / 3 * 2) * 5 / 2;	// è·ç¦»é˜ˆå€¼
 			if (validCutPointPairs[numValidPairs - 1 - i].dist > distThresh) {
 				distValidCutPointPairs.pop_back();
 			}
@@ -1314,14 +1316,14 @@ Mat cutTouching(Mat objMask, Mat originalObjI, Mat cutPointsMap, double globalAv
 	}
 
 	ConnectedRegion objNum(obj1, 4);
-	if (objNum.connNum_ < 2) {		// Ö»ÄÜÊÇ¿ÕµÄÇé¿ö£¿ ÉÏÊöÇé¿öÃ»ÇĞ³É
+	if (objNum.connNum_ < 2) {		// åªèƒ½æ˜¯ç©ºçš„æƒ…å†µï¼Ÿ ä¸Šè¿°æƒ…å†µæ²¡åˆ‡æˆ
 
-									// ¶ÔÓĞÁ½¸ö¼°ÒÔÉÏÇĞ¸îµã
+									// å¯¹æœ‰ä¸¤ä¸ªåŠä»¥ä¸Šåˆ‡å‰²ç‚¹
 		if (numCutPointRegions > 1) {
-			// Ö»ÓĞÒ»¸ö¹Ç¼Ü
+			// åªæœ‰ä¸€ä¸ªéª¨æ¶
 			if (s.connNum_ == 1) {
 				if (nEP < 3) {
-					// ÕÒµ½ÍäÇúµã
+					// æ‰¾åˆ°å¼¯æ›²ç‚¹
 
 					Mat angleChanges;
 					if (!ep.empty()) {
@@ -1346,11 +1348,11 @@ Mat cutTouching(Mat objMask, Mat originalObjI, Mat cutPointsMap, double globalAv
 						vector<cuttingListStru> cutPointPairs = extractCutPointPairs(cutPointRegionProps);
 						vector<cuttingListStru> validCutPointPairs = reduceCuttingList(cutPointPairs, skel);
 
-						// ±£ÁôÇĞ¸îµã¶ÔµÄ¾àÀëÔÚÒ»¶¨·¶Î§ÄÚµÄÇĞ¸îµã¶Ô
+						// ä¿ç•™åˆ‡å‰²ç‚¹å¯¹çš„è·ç¦»åœ¨ä¸€å®šèŒƒå›´å†…çš„åˆ‡å‰²ç‚¹å¯¹
 						int numValidPairs = validCutPointPairs.size();
 						vector<cuttingListStru> distValidCutPointPairs(validCutPointPairs);
 						for (int i = 0; i < numValidPairs; i++) {
-							int distThresh = 20;	// ¾àÀëãĞÖµ
+							int distThresh = 20;	// è·ç¦»é˜ˆå€¼
 							if (validCutPointPairs[numValidPairs - 1 - i].dist > distThresh) {
 								distValidCutPointPairs.pop_back();
 							}
@@ -1366,17 +1368,17 @@ Mat cutTouching(Mat objMask, Mat originalObjI, Mat cutPointsMap, double globalAv
 						}
 					}
 				}
-				else if (nEP == 3 && bp.size() == 1) {		// ´ó¸ÅÖ¸ T ĞÍ
-					vector<cuttingListStru> cutPointPairs = findClosestToReference(cutPointRegionProps, bp); //´Ó½üµ½Ô¶ÅÅĞò
+				else if (nEP == 3 && bp.size() == 1) {		// å¤§æ¦‚æŒ‡ T å‹
+					vector<cuttingListStru> cutPointPairs = findClosestToReference(cutPointRegionProps, bp); //ä»è¿‘åˆ°è¿œæ’åº
 					vector<cuttingListStru> validCutPointPairs = reduceCuttingList(cutPointPairs, skel);
 
-					// ±£ÁôÇĞ¸îµã¶ÔµÄ¾àÀëÔÚÒ»¶¨·¶Î§ÄÚµÄÇĞ¸îµã¶Ô
+					// ä¿ç•™åˆ‡å‰²ç‚¹å¯¹çš„è·ç¦»åœ¨ä¸€å®šèŒƒå›´å†…çš„åˆ‡å‰²ç‚¹å¯¹
 					int numValidPairs = validCutPointPairs.size();
 					vector<cuttingListStru> distValidCutPointPairs(validCutPointPairs);
 					for (int i = 0; i < numValidPairs; i++) {
-						int distThresh = 22;	// ¾àÀëãĞÖµ£¬MATLAB ÖĞÎª 20
-												// µ«ÊÇÕâÀïÓÉÓÚÖ®Ç°¼ÆËãµãÎ»´æÔÚÎó²î
-												// µ¼ÖÂ¾àÀëÅĞ¶Ï³ö´í
+						int distThresh = 22;	// è·ç¦»é˜ˆå€¼ï¼ŒMATLAB ä¸­ä¸º 20
+												// ä½†æ˜¯è¿™é‡Œç”±äºä¹‹å‰è®¡ç®—ç‚¹ä½å­˜åœ¨è¯¯å·®
+												// å¯¼è‡´è·ç¦»åˆ¤æ–­å‡ºé”™
 						if (validCutPointPairs[numValidPairs - 1 - i].dist > distThresh) {
 							distValidCutPointPairs.pop_back();
 						}
@@ -1397,7 +1399,7 @@ Mat cutTouching(Mat objMask, Mat originalObjI, Mat cutPointsMap, double globalAv
 
 							brightness[i] = (double)sum(originalObjI & cutLine)[0] / 255.0 / countNonZero(cutLine);
 						}
-						// °´ÕÕ brightness µÄ½µĞò¸ø distValidCutPointPairs ÅÅĞò
+						// æŒ‰ç…§ brightness çš„é™åºç»™ distValidCutPointPairs æ’åº
 						for (int i = 0; i < brightness.size() - 1; i++) {
 							for (int j = i + 1; j < brightness.size(); j++) {
 								if (brightness[i] < brightness[j]) {
@@ -1414,7 +1416,7 @@ Mat cutTouching(Mat objMask, Mat originalObjI, Mat cutPointsMap, double globalAv
 						obj1 = cut(distValidCutPointPairs, originalObjI, objMask, globalAvg, minArea, "PalePath");
 					}
 				}
-				else if (nEP == 4) {	// ´ó¸ÅÖ¸±³¿¿±³µÄĞÎÊ½
+				else if (nEP == 4) {	// å¤§æ¦‚æŒ‡èƒŒé èƒŒçš„å½¢å¼
 
 					vector<cuttingListStru> cutPointPairs = extractCutPointPairs(cutPointRegionProps);
 					vector<cuttingListStru> reducedCutPointPairs = reduceCuttingList(cutPointPairs, skel);
@@ -1431,7 +1433,7 @@ Mat cutTouching(Mat objMask, Mat originalObjI, Mat cutPointsMap, double globalAv
 
 							ConnectedRegion singleCC(localSingles, 4);
 							if (countNonZero(localClusters) == 0
-								&& singleCC.connNum_ == 2) {		// ¸ÕºÃÇĞ³ÉÁ½¸öÈ¾É«Ìå
+								&& singleCC.connNum_ == 2) {		// åˆšå¥½åˆ‡æˆä¸¤ä¸ªæŸ“è‰²ä½“
 								break;
 							}
 							else {
@@ -1441,7 +1443,7 @@ Mat cutTouching(Mat objMask, Mat originalObjI, Mat cutPointsMap, double globalAv
 					}
 
 					if (obj1.empty()) {
-						// 4¸ö¶Ëµã£¬2¸ö·Ö²æµãµÄÇé¿ö
+						// 4ä¸ªç«¯ç‚¹ï¼Œ2ä¸ªåˆ†å‰ç‚¹çš„æƒ…å†µ
 						if (bp.size() == 2) {
 							vector<Point> branch1, branch2;
 							for (int i = 1; i <= 4; i++) {
@@ -1453,7 +1455,7 @@ Mat cutTouching(Mat objMask, Mat originalObjI, Mat cutPointsMap, double globalAv
 								}
 							}
 
-							// Ã¿Ö§Á½¸ö¶Ëµã
+							// æ¯æ”¯ä¸¤ä¸ªç«¯ç‚¹
 							if (branch1.size() == 2) {
 								double angle1 = angle3points(branch1[0], bp[0], branch1[1]);
 								double angle2 = angle3points(branch2[0], bp[1], branch2[1]);
@@ -1559,7 +1561,7 @@ Mat cutTouching(Mat objMask, Mat originalObjI, Mat cutPointsMap, double globalAv
 	return obj1;
 }
 
-// 23.ÑÓÉì¹Ç¼Ü
+// 23.å»¶ä¼¸éª¨æ¶
 void extendSkeleton(Mat objMask, Mat& skel, vector<Point>& ep, vector<Point>& bp) {
 	// ep: endPoints
 	// bp: junctions
@@ -1576,29 +1578,29 @@ void extendSkeleton(Mat objMask, Mat& skel, vector<Point>& ep, vector<Point>& bp
 				findPathNLength(skel, ep[i], bp[j], temp, lenEPBP[j]);
 			}
 
-			// ÕÒ×îĞ¡Öµ
+			// æ‰¾æœ€å°å€¼
 			vector<int>::iterator minimum = min_element(begin(lenEPBP), end(lenEPBP));
 			Mat minPath = Mat::zeros(skel.size(), CV_8UC1);
 			int minLength = 0;
 			int minIndex = distance(begin(lenEPBP), minimum);
 			findPathNLength(skel, ep[i], bp[minIndex], minPath, minLength);
 
-			// »ñÈ¡ bwtraceboundary µÄ½á¹û
-			// ÏÈÓÃ findcontours ÕÒÂÖÀª
-			// È»ºó¶ÔµãÅÅĞò
+			// è·å– bwtraceboundary çš„ç»“æœ
+			// å…ˆç”¨ findcontours æ‰¾è½®å»“
+			// ç„¶åå¯¹ç‚¹æ’åº
 			vector<vector<Point>> contours;
 			vector<Vec4i> hierarchy;
 			findContours(minPath, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE, Point(0, 0));
 			if (contours.empty())
 				return;
 			vector<Point> contourToBeSorted = contours[0];
-			// ÅÅĞò
-			// ÏÈ°Ñ´ÓµÚÒ»¸ö¿ªÊ¼µ½ length ¸öÔªËØÄÃ³öÀ´
+			// æ’åº
+			// å…ˆæŠŠä»ç¬¬ä¸€ä¸ªå¼€å§‹åˆ° length ä¸ªå…ƒç´ æ‹¿å‡ºæ¥
 			int length = countNonZero(minPath);
 			vector<Point> temp(length, Point(0, 0));
 			copy(contourToBeSorted.begin(), contourToBeSorted.begin() + length, temp.begin());
-			// È»ºóÔÚ temp ÀïÃæÅÅĞò
-			Point compTemp(ep[i].y, ep[i].x);		// ep[i] ·´×ªÒ»ÏÂ
+			// ç„¶ååœ¨ temp é‡Œé¢æ’åº
+			Point compTemp(ep[i].y, ep[i].x);		// ep[i] åè½¬ä¸€ä¸‹
 			vector<Point> contour(length, Point(0, 0));
 			for (int idx = 0; idx < length; idx++) {
 				if (temp[idx] == compTemp) {
@@ -1613,7 +1615,7 @@ void extendSkeleton(Mat objMask, Mat& skel, vector<Point>& ep, vector<Point>& bp
 				}
 			}
 
-			// contour ·´×ª
+			// contour åè½¬
 			for (int idx = 0; idx < length; idx++) {
 				int temp = contour[idx].x;
 				contour[idx].x = contour[idx].y;
@@ -1628,7 +1630,7 @@ void extendSkeleton(Mat objMask, Mat& skel, vector<Point>& ep, vector<Point>& bp
 			else
 				CL = contour.size();
 
-			// ÏòÍâÑÓÉìÄ©¶Ëµã£¬Ê¹ÆäÓëobj_maskÏà½»
+			// å‘å¤–å»¶ä¼¸æœ«ç«¯ç‚¹ï¼Œä½¿å…¶ä¸obj_maskç›¸äº¤
 			int L = 30;
 			ep2[i] = ep[i] + (ep[i] - contour[CL - 1]) * (L / norm(Mat(ep[i]), Mat(contour[CL - 1])));
 			fitExtention(ep2[i], ep[i], contour[CL - 1], objMask.size());
@@ -1643,10 +1645,10 @@ void extendSkeleton(Mat objMask, Mat& skel, vector<Point>& ep, vector<Point>& bp
 			sExtCrossingPoints.calculateBoundingBox();
 			int numSExtCrossingPoints = sExtCrossingPoints.connNum_;
 
-			if (numSExtCrossingPoints > 1) {		// Èç¹ûÓĞ¶à¸ö½»µã£¬Ñ¡Ôñ×î½üµÄ
+			if (numSExtCrossingPoints > 1) {		// å¦‚æœæœ‰å¤šä¸ªäº¤ç‚¹ï¼Œé€‰æ‹©æœ€è¿‘çš„
 				Mat tmpSkel = Mat::zeros(skelExt.size(), CV_8UC1);
 
-				// ÕÒ×îĞ¡Öµ
+				// æ‰¾æœ€å°å€¼
 				Mat centroids = sExtCrossingPoints.centroids_;
 				int minIdx = 0;
 				Point center = Point(centroids.at<double>(1, 1), centroids.at<double>(1, 0));
@@ -1672,7 +1674,7 @@ void extendSkeleton(Mat objMask, Mat& skel, vector<Point>& ep, vector<Point>& bp
 	return;
 }
 
-// 24.·ÖÎö¹Ç¼Ü
+// 24.åˆ†æéª¨æ¶
 void anaskel(Mat skel, vector<Point>& endPoints, vector<Point>& junctions) {
 	// trim skeleton
 	Mat skelTrim = doctrim(skel);
@@ -1687,7 +1689,7 @@ void anaskel(Mat skel, vector<Point>& endPoints, vector<Point>& junctions) {
 
 				// endpoints
 				if (nbr_branches[hood] < 2) {
-					endPoints.push_back(Point(row, col));			// ÕâÀïÔ­À´µÄcppÖĞ¼ÓÒ»£¬ÊÇÒòÎªMATLABÏÂ±êË÷Òı´Ó1¿ªÊ¼
+					endPoints.push_back(Point(row, col));			// è¿™é‡ŒåŸæ¥çš„cppä¸­åŠ ä¸€ï¼Œæ˜¯å› ä¸ºMATLABä¸‹æ ‡ç´¢å¼•ä»1å¼€å§‹
 				}
 
 				// junctions
@@ -1700,9 +1702,9 @@ void anaskel(Mat skel, vector<Point>& endPoints, vector<Point>& junctions) {
 	return;
 }
 
-// 25.¶ÔÊäÈëµÄ¹Ç¼Ü½øĞĞ¼ôÖ¦
+// 25.å¯¹è¾“å…¥çš„éª¨æ¶è¿›è¡Œå‰ªæ
 Mat doctrim(Mat skel) {
-	// anaskel ÖĞµÄ×Óº¯Êı
+	// anaskel ä¸­çš„å­å‡½æ•°
 	Mat doctrimSkel = skel.clone();
 
 	for (int row = 0; row < doctrimSkel.rows; row++) {
@@ -1720,11 +1722,11 @@ Mat doctrim(Mat skel) {
 	return doctrimSkel;
 }
 
-// 26.ÁÚÓòĞÅÏ¢
+// 26.é‚»åŸŸä¿¡æ¯
 int neighborhood(const Mat img, const int rowIdx, const int colIdx) {
-	// ·µ»Ø img ÖĞÖ¸¶¨Î»ÖÃµÄÏñËØµÄÁÚÓòĞÅÏ¢
-	// 12µã·½ÏòÆğÊ¼Ë³Ê±Õë
-	// anaskel ºÍ doctrim µÄ×Óº¯Êı
+	// è¿”å› img ä¸­æŒ‡å®šä½ç½®çš„åƒç´ çš„é‚»åŸŸä¿¡æ¯
+	// 12ç‚¹æ–¹å‘èµ·å§‹é¡ºæ—¶é’ˆ
+	// anaskel å’Œ doctrim çš„å­å‡½æ•°
 	int nrow = img.rows, ncol = img.cols;
 
 	int condition = 8 * (rowIdx <= 0) + 4 * (colIdx <= 0) + 2 * (rowIdx >= nrow - 1) + (colIdx >= ncol - 1);
@@ -1780,7 +1782,7 @@ int neighborhood(const Mat img, const int rowIdx, const int colIdx) {
 	}
 }
 
-// 27.»ñÈ¡Â·¾¶³¤¶È
+// 27.è·å–è·¯å¾„é•¿åº¦
 void findPathNLength(Mat skeletonPath, Point point1, Point point2, Mat& path, int& len) {
 	Mat D1 = bwdistgeodesic(skeletonPath, point1.y, point1.x);
 	Mat D2 = bwdistgeodesic(skeletonPath, point2.y, point2.x);
@@ -1800,7 +1802,7 @@ void findPathNLength(Mat skeletonPath, Point point1, Point point2, Mat& path, in
 	return;
 }
 
-// 28.»ñÈ¡²âµØ¾àÀë
+// 28.è·å–æµ‹åœ°è·ç¦»
 Mat bwdistgeodesic(const Mat src, double cols, double rows)
 {
 	Mat distance = Mat::ones(src.size(), CV_64FC1) * (INT_MAX);
@@ -1816,7 +1818,7 @@ Mat bwdistgeodesic(const Mat src, double cols, double rows)
 		curPos = next.front();
 		next.pop();
 		//for a point  : col-->x  row-->y				for mat  :  at function visit by  (  row , col )
-		//´¦Àíµ±Ç°µãµÄ°ËÁìÓò  
+		//å¤„ç†å½“å‰ç‚¹çš„å…«é¢†åŸŸ  
 		const uchar* mask_data = NULL;
 		double* dist_data = NULL;
 		for (i = curPos.y - 1; i <= curPos.y + 1; ++i)
@@ -1828,7 +1830,7 @@ Mat bwdistgeodesic(const Mat src, double cols, double rows)
 			for (j = curPos.x - 1; j <= curPos.x + 1; ++j)
 			{
 				if (j == -1 || j == src.cols) continue;
-				if ((int(mask_data[j]) != 0) && (int(dist_data[j] == INT_MAX)))//µ±Ç°µãÊôÓÚµØÇÒÎ´´¦Àí
+				if ((int(mask_data[j]) != 0) && (int(dist_data[j] == INT_MAX)))//å½“å‰ç‚¹å±äºåœ°ä¸”æœªå¤„ç†
 				{
 					const uchar* mask_data2 = NULL;
 					double* dist_data2 = NULL;
@@ -1862,7 +1864,7 @@ Mat bwdistgeodesic(const Mat src, double cols, double rows)
 	return distance;
 }
 
-// 29.»ñÈ¡¾Ö²¿×îĞ¡Öµ
+// 29.è·å–å±€éƒ¨æœ€å°å€¼
 void imregionalmin(Mat src, Mat& path, int& len) {
 	double min = 10000;
 	for (int row = 0; row < src.rows; row++) {
@@ -1885,7 +1887,7 @@ void imregionalmin(Mat src, Mat& path, int& len) {
 	return;
 }
 
-// 30.Ñ°ÕÒÇĞ¸îµã¶Ô
+// 30.å¯»æ‰¾åˆ‡å‰²ç‚¹å¯¹
 vector<cuttingListStru> extractCutPointPairs(ConnectedRegion cutPointRegionProps) {
 	int numRegions = cutPointRegionProps.connNum_;
 	int numPairs = numRegions * (numRegions - 1) / 2;
@@ -1908,7 +1910,7 @@ vector<cuttingListStru> extractCutPointPairs(ConnectedRegion cutPointRegionProps
 	return cutPointPairs;
 }
 
-// 31.»ñµÃÄÜ¹»ÇĞ¸î¹Ç¼ÜµÄÇĞ¸îµã×éºÏ
+// 31.è·å¾—èƒ½å¤Ÿåˆ‡å‰²éª¨æ¶çš„åˆ‡å‰²ç‚¹ç»„åˆ
 vector<cuttingListStru> reduceCuttingList(vector<cuttingListStru> cutPointPairs, Mat skel) {
 
 	vector<cuttingListStru> validCutPointPairs;
@@ -1920,7 +1922,7 @@ vector<cuttingListStru> reduceCuttingList(vector<cuttingListStru> cutPointPairs,
 		Point tempPoint1 = cutPointPairs[i].point1;
 		Point tempPoint2 = cutPointPairs[i].point2;
 
-		// MATLAB ÖĞ drawLine º¯Êı£¬ÊÇÁ½´Î²Ù×÷£¬Ò»´Î»­Ïß£¬Ò»´ÎÅòÕÍ
+		// MATLAB ä¸­ drawLine å‡½æ•°ï¼Œæ˜¯ä¸¤æ¬¡æ“ä½œï¼Œä¸€æ¬¡ç”»çº¿ï¼Œä¸€æ¬¡è†¨èƒ€
 		line(cutLine, Point(tempPoint1.y, tempPoint1.x), Point(tempPoint2.y, tempPoint2.x), Scalar::all(255));
 		Mat element = getStructuringElement(MORPH_ELLIPSE, Size(3, 3));
 		morphologyEx(cutLine, cutLine, MORPH_DILATE, element);
@@ -1933,7 +1935,7 @@ vector<cuttingListStru> reduceCuttingList(vector<cuttingListStru> cutPointPairs,
 	return validCutPointPairs;
 }
 
-// 32.ÇĞ¸î
+// 32.åˆ‡å‰²
 Mat cut(vector<cuttingListStru> cutPointPairs, Mat originalObjI, Mat objMask,
 	double globalAvg, double minArea, String logic) {
 	Mat obj1;
@@ -1987,7 +1989,7 @@ Mat cut(vector<cuttingListStru> cutPointPairs, Mat originalObjI, Mat objMask,
 	return obj1;
 }
 
-// 33.À©Õ¹
+// 33.æ‰©å±•
 void fitExtention(Point& pointEx, Point point1, Point ref, Size imgSize) {
 	if (pointEx.x < 1) {
 		pointEx.x = 1;
@@ -2011,7 +2013,7 @@ void fitExtention(Point& pointEx, Point point1, Point ref, Size imgSize) {
 	return;
 }
 
-// 34.Ñ°ÕÒ×î½üµã
+// 34.å¯»æ‰¾æœ€è¿‘ç‚¹
 vector<cuttingListStru> findClosestToReference(ConnectedRegion cutPointProps, vector<Point> refBp) {
 	int numCutPoints = cutPointProps.connNum_;
 	int numCutPointPair = numCutPoints * (numCutPoints - 1) / 2;
@@ -2042,7 +2044,7 @@ vector<cuttingListStru> findClosestToReference(ConnectedRegion cutPointProps, ve
 	return cutPointPairs;
 }
 
-// 35.¼ÆËãÈıµã½Ç¶È
+// 35.è®¡ç®—ä¸‰ç‚¹è§’åº¦
 double angle3points(Point point1, Point point2, Point point3) {
 	Point v1 = point1 - point2;
 	Point v2 = point2 - point3;
@@ -2057,7 +2059,7 @@ double angle3points(Point point1, Point point2, Point point3) {
 	return angle;
 }
 
-// 36.Ñ°ÕÒ½Ç¶È±ä»¯
+// 36.å¯»æ‰¾è§’åº¦å˜åŒ–
 Mat findAngleChanges(Mat line, Point startPoint) {
 	Mat angleChanges = Mat::zeros(line.size(), CV_8UC1);
 
@@ -2073,7 +2075,7 @@ Mat findAngleChanges(Mat line, Point startPoint) {
 	findContours(line, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE, Point(0, 0));
 	vector<Point> linePoints = contours[0];
 
-	if (numLinePoints > linePoints.size()) {		// ÕâÖÖÇé¿öÒÑ¾­²»Õı³£ÁË
+	if (numLinePoints > linePoints.size()) {		// è¿™ç§æƒ…å†µå·²ç»ä¸æ­£å¸¸äº†
 		return angleChanges;
 	}
 
@@ -2102,7 +2104,7 @@ Mat findAngleChanges(Mat line, Point startPoint) {
 	return angleChanges;
 }
 
-// 37.Ğı×ª
+// 37.æ—‹è½¬
 Mat imrotate(Mat src, double angle, String model) {
 	Point center(round(src.cols / 2), round(src.rows / 2));
 	Mat rotate_model = getRotationMatrix2D(center, angle, 1);
@@ -2123,7 +2125,7 @@ Mat imrotate(Mat src, double angle, String model) {
 	return dst;
 }
 
-// 38.·ÖÀëÖØµşÈ¾É«Ìå
+// 38.åˆ†ç¦»é‡å æŸ“è‰²ä½“
 vector<vector<Mat>> separateMultipleOverlapped2new(Mat obj_mask, Mat obj_img, double globalAvg, double minArea) {
 	Mat skr = skeleton(obj_mask);
 	threshold(skr, skr, 25, 255, THRESH_BINARY);
@@ -2198,7 +2200,7 @@ vector<vector<Mat>> separateMultipleOverlapped2new(Mat obj_mask, Mat obj_img, do
 						cutobjstat.calculatePixelList();
 						int num_chromos = cutobjstat.connNum_;
 
-						// cut_comb_final[i]³õÊ¼»¯
+						// cut_comb_final[i]åˆå§‹åŒ–
 						vector<Mat> tempvector;
 						for (int idx = 0; idx < num_chromos; idx++) {
 							Mat tempmask = Mat::zeros(obj_mask.size(), CV_8UC1);
@@ -2221,12 +2223,12 @@ vector<vector<Mat>> separateMultipleOverlapped2new(Mat obj_mask, Mat obj_img, do
 		}
 	}
 	/*
-	else if (ep.size() == 4 && bp.size() <= 2) { // ½»²æÈ¾É«ÌåµÄ´¦Àí
-	// ĞŞ¸ÄµÄµØ·½£º
-	// 1.É¾³ıÁË moduleCrossSeg.cpp ÖĞ findskeleton ºÍ findskellengthorder
-	// Á½¸öº¯ÊıµÄ¶¨Òå
-	// 2.°ÑÉÏÃæÁ½¸öº¯ÊıµÄ¶¨Òå·ÅÔÚÁË func.cpp ÖĞ
-	// 3.ÔÚ main.h ÖĞÌí¼ÓÁËÉÏÃæÁ½¸öº¯ÊıµÄÉùÃ÷
+	else if (ep.size() == 4 && bp.size() <= 2) { // äº¤å‰æŸ“è‰²ä½“çš„å¤„ç†
+	// ä¿®æ”¹çš„åœ°æ–¹ï¼š
+	// 1.åˆ é™¤äº† moduleCrossSeg.cpp ä¸­ findskeleton å’Œ findskellengthorder
+	// ä¸¤ä¸ªå‡½æ•°çš„å®šä¹‰
+	// 2.æŠŠä¸Šé¢ä¸¤ä¸ªå‡½æ•°çš„å®šä¹‰æ”¾åœ¨äº† func.cpp ä¸­
+	// 3.åœ¨ main.h ä¸­æ·»åŠ äº†ä¸Šé¢ä¸¤ä¸ªå‡½æ•°çš„å£°æ˜
 	vector<Mat> skeletonStructEpEpPath = findSkelLengthOrder(skel, ep, bp);
 	Mat cutPoints = getCutPoints(obj_mask, 0.15, 30, "or");
 	if (bp.size() == 2) {
@@ -2253,7 +2255,7 @@ vector<vector<Mat>> separateMultipleOverlapped2new(Mat obj_mask, Mat obj_img, do
 	pointVec[i] = Point(cutPointListX.pixelList_[i][0].x,
 	cutPointListX.pixelList_[i][0].y);
 
-	// ÕÒ pointVec ÖĞ×î´óµÄ¾àÀë
+	// æ‰¾ pointVec ä¸­æœ€å¤§çš„è·ç¦»
 	double maxDist = norm(Mat(pointVec[0]), Mat(pointVec[1]));
 	int firstMaxIdx = 0, secondMaxIdx = 1;
 	for (int i = 0; i < 3; i++) {
@@ -2267,9 +2269,9 @@ vector<vector<Mat>> separateMultipleOverlapped2new(Mat obj_mask, Mat obj_img, do
 	}
 	}
 
-	// °´Ë³ĞòÅÅÁĞÏÂ±ê
-	// ¾àÀë×î´óµÄÁ½¸öµãµÄÏÂ±ê·Ö±ğ·ÅÔÚ a µÄÒ»ºÅÎ»ºÍËÄºÅÎ»
-	// Ê£ÏÂÁ½¸öµãµÄÏÂ±ê·Ö±ğ·ÅÔÚ a µÄ¶şºÅÎ»ºÍÈıºÅÎ»
+	// æŒ‰é¡ºåºæ’åˆ—ä¸‹æ ‡
+	// è·ç¦»æœ€å¤§çš„ä¸¤ä¸ªç‚¹çš„ä¸‹æ ‡åˆ†åˆ«æ”¾åœ¨ a çš„ä¸€å·ä½å’Œå››å·ä½
+	// å‰©ä¸‹ä¸¤ä¸ªç‚¹çš„ä¸‹æ ‡åˆ†åˆ«æ”¾åœ¨ a çš„äºŒå·ä½å’Œä¸‰å·ä½
 	vector<int> a(4, 0);
 	a[0] = firstMaxIdx; a[3] = secondMaxIdx;
 	bool oneOk = false;
@@ -2286,7 +2288,7 @@ vector<vector<Mat>> separateMultipleOverlapped2new(Mat obj_mask, Mat obj_img, do
 	}
 
 	vector<Mat> singleChroms;
-	// Á½¸ö vector ÀïÃæ·Ö±ğ´æÁËÁ½¸öµã
+	// ä¸¤ä¸ª vector é‡Œé¢åˆ†åˆ«å­˜äº†ä¸¤ä¸ªç‚¹
 	vector<Point> cuttingListElement(2, Point(0, 0));
 	vector<vector<Point>> cuttingLists11(2, cuttingListElement);
 	//cuttingListElement = cuttingLists[0];
@@ -2403,7 +2405,7 @@ vector<vector<Mat>> separateMultipleOverlapped2new(Mat obj_mask, Mat obj_img, do
 				Mat sub_skeleton = Ep2Ep_Path[skelidx];
 				vector<cuttingListStru> cutPoints_valid = reduceCuttingList(CutPoint_pairs, sub_skeleton);
 
-				// ÌŞ³ı valid
+				// å‰”é™¤ valid
 				vector<cuttingListStru> cutPoint_pairs1;
 				for (int idx = 0; idx < CutPoint_pairs.size(); idx++) {
 					cuttingListStru toBeCompared = CutPoint_pairs[idx];
@@ -2635,7 +2637,7 @@ vector<vector<Mat>> separateMultipleOverlapped2new(Mat obj_mask, Mat obj_img, do
 	}
 	return cut_comb_final;
 }
-// 39.Ñ°ÕÒ¹Ç¼ÜÂ·¾¶
+// 39.å¯»æ‰¾éª¨æ¶è·¯å¾„
 vector<Mat> findEnd2EndPathOnSkeleton2(Mat skel, vector<Point> ep) {
 	int num_pairs = int(ep.size()*(ep.size() - 1) / 2);
 	vector<Mat> Ep2Ep_Path;
@@ -2667,9 +2669,9 @@ vector<Mat> findEnd2EndPathOnSkeleton2(Mat skel, vector<Point> ep) {
 	return Ep2Ep_Path;
 }
 
-// 40.Ñ°ÕÒmultiple clusterµÄµã
+// 40.å¯»æ‰¾multiple clusterçš„ç‚¹
 void findPointMuiltipleCluster(Mat obj_mask, Mat cutPoints_map, Mat skel, vector<Point> bp, vector<Point> ep, Mat& CutPoints_map, vector<cuttingListStru>& cutPoint_Pairs, vector<Mat>& commonArea) {
-	// commonAreaÊÇ¸öÖ»ÓĞÒ»¸öÊôĞÔµÄstruct
+	// commonAreaæ˜¯ä¸ªåªæœ‰ä¸€ä¸ªå±æ€§çš„struct
 
 	Mat skeleton2;
 	if (bp.size() == 4 && ep.size() == 6) {
@@ -2737,7 +2739,7 @@ void findPointMuiltipleCluster(Mat obj_mask, Mat cutPoints_map, Mat skel, vector
 		findCutPoints(cutPoints_map, obj_mask, sub_skel, sub_skel_ep, sub_skel_bp,
 			CutPoints_map_iter, cutPoint_Pairs_iter);
 
-		// CutPoint_PairsµÄÁ¬½Ó
+		// CutPoint_Pairsçš„è¿æ¥
 		cutPoint_Pairs.insert(cutPoint_Pairs.end(), cutPoint_Pairs_iter.begin(), cutPoint_Pairs_iter.end());
 
 
@@ -2756,7 +2758,7 @@ void findPointMuiltipleCluster(Mat obj_mask, Mat cutPoints_map, Mat skel, vector
 				}
 				Mat commareafilled = imFill(commarea);
 
-				// È¥ÂÖÀª
+				// å»è½®å»“
 				Mat boundary = Mat::zeros(commareafilled.size(), CV_8UC1);
 				vector<vector<Point>> contours;
 				findContours(commareafilled, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
@@ -2775,7 +2777,7 @@ void findPointMuiltipleCluster(Mat obj_mask, Mat cutPoints_map, Mat skel, vector
 	return;
 }
 
-// 41.ÇĞ¸î¹Ç¼Ü
+// 41.åˆ‡å‰²éª¨æ¶
 Mat splitSkeleton(Mat skel, int k, vector<Point> bp) {
 
 	vector<double> bpDist;
@@ -2801,18 +2803,18 @@ Mat splitSkeleton(Mat skel, int k, vector<Point> bp) {
 	Mat path; int len;
 	findPathNLength(skel, bp1, bp2, path, len);
 
-	// ÕÒtrace
+	// æ‰¾trace
 	vector<vector<Point>> contours;
 	vector<Vec4i> hierarchy;
 	findContours(skel, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE, Point(0, 0));
 	vector<Point> contourToBeSorted = contours[0];
-	// ÅÅĞò
-	// ÏÈ°Ñ´ÓµÚÒ»¸ö¿ªÊ¼µ½ length ¸öÔªËØÄÃ³öÀ´
+	// æ’åº
+	// å…ˆæŠŠä»ç¬¬ä¸€ä¸ªå¼€å§‹åˆ° length ä¸ªå…ƒç´ æ‹¿å‡ºæ¥
 	int length = countNonZero(path);
 	vector<Point> temp(length, Point(0, 0));
 	copy(contourToBeSorted.begin(), contourToBeSorted.begin() + length, temp.begin());
-	// È»ºóÔÚ temp ÀïÃæÅÅĞò
-	Point compTemp(bp1.y, bp1.x);		// bp1 ·´×ªÒ»ÏÂ
+	// ç„¶ååœ¨ temp é‡Œé¢æ’åº
+	Point compTemp(bp1.y, bp1.x);		// bp1 åè½¬ä¸€ä¸‹
 	vector<Point> contour(length, Point(0, 0));
 	for (int idx = 0; idx < length; idx++) {
 		if (temp[idx] == compTemp) {
@@ -2823,7 +2825,7 @@ Mat splitSkeleton(Mat skel, int k, vector<Point> bp) {
 		}
 	}
 
-	// È¡ contour ÖĞ¼ä¸½½üµÄµã£¬²¢·´×ª
+	// å– contour ä¸­é—´é™„è¿‘çš„ç‚¹ï¼Œå¹¶åè½¬
 	Point midPoint = contour[round(length / 2)];
 	int mid = midPoint.y; midPoint.y = midPoint.x; midPoint.x = mid;
 
@@ -2839,7 +2841,7 @@ Mat splitSkeleton(Mat skel, int k, vector<Point> bp) {
 	return skeleton2;
 }
 
-// 42.Ñ°ÕÒÇĞ¸îµã
+// 42.å¯»æ‰¾åˆ‡å‰²ç‚¹
 void findCutPoints(Mat cutPoints_map, Mat obj_mask, Mat skel, vector<Point> ep, vector<Point>bp,
 	Mat& CutPoints_map, vector<cuttingListStru>& cutPoint_pairs) {
 	if (bp.size() > 1) {
@@ -3097,7 +3099,7 @@ void calcEnvelope(Mat src, Mat& dst) {
 	int rows = src.rows, cols = src.cols;
 	int i = 0, j = 0;
 	for (i = 0; i < rows; i++) {
-		// °´ĞĞÉ¨Ãè
+		// æŒ‰è¡Œæ‰«æ
 		int left = -1, right = -1;
 		for (j = 0; j < cols; j++) {
 			if (src.at<uchar>(i, j) > 0) {
@@ -3118,7 +3120,7 @@ void calcEnvelope(Mat src, Mat& dst) {
 		}
 	}
 	for (j = 0; j < cols; j++) {
-		// °´ÁĞÉ¨Ãè
+		// æŒ‰åˆ—æ‰«æ
 		int up = -1, down = -1;
 		for (i = 0; i < rows; i++) {
 			if (src.at<uchar>(i, j) > 0) {
@@ -3330,9 +3332,9 @@ Mat findSkeleton(Mat obj, int thresh, vector<Point> & ep, vector<Point> & bp) {
 
 	Mat skel = ThiningDIBSkeleton(skr);
 
-	// ÕâÒ»¶ÎÊÇÎªÁËÏûµôÉÏÃæµÄÏ¸»¯º¯Êı
-	// ¿ÉÄÜ³öÏÖµÄ´íÎó
-	// Æ©Èç³¤³öÀ´ºÜ¶ÌµÄÒ»½ØĞ¡Ö¦
+	// è¿™ä¸€æ®µæ˜¯ä¸ºäº†æ¶ˆæ‰ä¸Šé¢çš„ç»†åŒ–å‡½æ•°
+	// å¯èƒ½å‡ºç°çš„é”™è¯¯
+	// è­¬å¦‚é•¿å‡ºæ¥å¾ˆçŸ­çš„ä¸€æˆªå°æ
 	int times = 0;
 	while (times < 100) {
 		times++;
@@ -3363,16 +3365,16 @@ Mat findSkeleton(Mat obj, int thresh, vector<Point> & ep, vector<Point> & bp) {
 				findPathNLength(skel, ep[i], bp[j], temp, lenEPBP[j]);
 			}
 
-			// ÕÒ×îĞ¡Öµ
+			// æ‰¾æœ€å°å€¼
 			vector<int>::iterator minimum = min_element(begin(lenEPBP), end(lenEPBP));
 			Mat minPath = Mat::zeros(skel.size(), CV_8UC1);
 			int minLength = 0;
 			int minIndex = distance(begin(lenEPBP), minimum);
 			findPathNLength(skel, ep[i], bp[minIndex], minPath, minLength);
 
-			// »ñÈ¡ bwtraceboundary µÄ½á¹û
-			// ÏÈÓÃ findcontours ÕÒÂÖÀª
-			// È»ºó¶ÔµãÅÅĞò
+			// è·å– bwtraceboundary çš„ç»“æœ
+			// å…ˆç”¨ findcontours æ‰¾è½®å»“
+			// ç„¶åå¯¹ç‚¹æ’åº
 			vector<vector<Point>> contours;
 			vector<Vec4i> hierarchy;
 			findContours(minPath, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE, Point(0, 0));
@@ -3383,13 +3385,13 @@ Mat findSkeleton(Mat obj, int thresh, vector<Point> & ep, vector<Point> & bp) {
 			}
 
 			vector<Point> contourToBeSorted = contours[0];
-			// ÅÅĞò
-			// ÏÈ°Ñ´ÓµÚÒ»¸ö¿ªÊ¼µ½ length ¸öÔªËØÄÃ³öÀ´
+			// æ’åº
+			// å…ˆæŠŠä»ç¬¬ä¸€ä¸ªå¼€å§‹åˆ° length ä¸ªå…ƒç´ æ‹¿å‡ºæ¥
 			int length = countNonZero(minPath);
 			vector<Point> temp(length, Point(0, 0));
 			copy(contourToBeSorted.begin(), contourToBeSorted.begin() + length, temp.begin());
-			// È»ºóÔÚ temp ÀïÃæÅÅĞò
-			Point compTemp(ep[i].y, ep[i].x);		// ep[i] ·´×ªÒ»ÏÂ
+			// ç„¶ååœ¨ temp é‡Œé¢æ’åº
+			Point compTemp(ep[i].y, ep[i].x);		// ep[i] åè½¬ä¸€ä¸‹
 			vector<Point> contour(length, Point(0, 0));
 			for (int idx = 0; idx < length; idx++) {
 				if (temp[idx] == compTemp) {
@@ -3404,7 +3406,7 @@ Mat findSkeleton(Mat obj, int thresh, vector<Point> & ep, vector<Point> & bp) {
 				}
 			}
 
-			// contour ·´×ª
+			// contour åè½¬
 			for (int idx = 0; idx < length; idx++) {
 				int temp = contour[idx].x;
 				contour[idx].x = contour[idx].y;
@@ -3419,7 +3421,7 @@ Mat findSkeleton(Mat obj, int thresh, vector<Point> & ep, vector<Point> & bp) {
 			else
 				CL = minLength;
 
-			// ÏòÍâÑÓÉìÄ©¶Ëµã£¬Ê¹ÆäÓëobj_maskÏà½»
+			// å‘å¤–å»¶ä¼¸æœ«ç«¯ç‚¹ï¼Œä½¿å…¶ä¸obj_maskç›¸äº¤
 			int L = 30;
 			ep2[i] = ep[i] + (ep[i] - contour[CL - 1]) * (L / norm(Mat(ep[i]), Mat(contour[CL - 1])));
 			fitExtention(ep2[i], ep[i], contour[CL - 1], obj.size());
@@ -3438,7 +3440,7 @@ Mat findSkeleton(Mat obj, int thresh, vector<Point> & ep, vector<Point> & bp) {
 			sExtCrossingPoints.calculateBoundingBox();
 			int numSExtCrossingPoints = sExtCrossingPoints.connNum_;
 
-			if (numSExtCrossingPoints > 1) {		// Èç¹ûÓĞ¶à¸ö½»µã£¬Ñ¡Ôñ×î½üµÄ
+			if (numSExtCrossingPoints > 1) {		// å¦‚æœæœ‰å¤šä¸ªäº¤ç‚¹ï¼Œé€‰æ‹©æœ€è¿‘çš„
 				Mat tmp = skelExt.clone();
 
 				double dist = 1000;
@@ -3456,7 +3458,7 @@ Mat findSkeleton(Mat obj, int thresh, vector<Point> & ep, vector<Point> & bp) {
 
 				vector<Point> chosenPixelList = sExtCrossingPoints.pixelList_[chosen - 1];
 				for (int n = 0; n < chosenPixelList.size(); n++) {
-					tmp.at<uchar>(chosenPixelList[n]) = 0;
+					tmp.at<uchar>(chosenPixelList[n].x, chosenPixelList[n].y) = 0;
 				}
 				skelExt = skelExt - tmp;
 			}
@@ -3492,7 +3494,7 @@ vector<Mat> findSkelLengthOrder(Mat skeleton, vector<Point> ep, vector<Point> bp
 		}
 	}
 
-	// °´ÕÕ length µÄ½µĞò¸ø path ÅÅĞò
+	// æŒ‰ç…§ length çš„é™åºç»™ path æ’åº
 	vector<Mat> sortedPath(paths);
 	for (int i = 0; i < length.size() - 1; i++) {
 		for (int j = i + 1; j < length.size(); j++) {
@@ -3511,14 +3513,14 @@ vector<Mat> findSkelLengthOrder(Mat skeleton, vector<Point> ep, vector<Point> bp
 	return sortedPath;
 }
 
-// 54.Ô¤·Ö¸î
+// 54.é¢„åˆ†å‰²
 void preSeg(Mat img, bool bIntensityReverse, bool bCutTouching,
 	int & preSingleNum, int & preSingleArea, int & preSingleEnvelope) {
 	/**********************************
 	* Input:
-	* @param1 img					Ô­Í¼
-	* @param2 bIntensityReverse		ÊÇ·ñĞèÒª·´ÖÃ
-	* @param3 bCutTouching			ÊÇ·ñĞèÇĞ·Öğ¤Á¬µÄÈ¾É«Ìå
+	* @param1 img					åŸå›¾
+	* @param2 bIntensityReverse		æ˜¯å¦éœ€è¦åç½®
+	* @param3 bCutTouching			æ˜¯å¦éœ€åˆ‡åˆ†é»è¿çš„æŸ“è‰²ä½“
 	*
 	* Output:
 	* @param1 preSingleNum
@@ -3526,15 +3528,15 @@ void preSeg(Mat img, bool bIntensityReverse, bool bCutTouching,
 	*
 	***********************************/
 
-	// »ñÈ¡»Ò¶ÈÍ¼
+	// è·å–ç°åº¦å›¾
 	Mat imgGray;
 	if (bIntensityReverse)
 		bitwise_not(img, imgGray);
 	else
 		imgGray = img.clone();
 
-	// µ÷Õû³ß¶È´óĞ¡
-	// imgForExtraction ÓÃÓÚÌáÈ¡È¾É«ÌåÍ¼ÏñÊı¾İ
+	// è°ƒæ•´å°ºåº¦å¤§å°
+	// imgForExtraction ç”¨äºæå–æŸ“è‰²ä½“å›¾åƒæ•°æ®
 	int eH = 0, eW = 0;
 	Mat imgForExtraction = imgUniform(imgGray, eH, eW);
 
@@ -3543,7 +3545,7 @@ void preSeg(Mat img, bool bIntensityReverse, bool bCutTouching,
 	resize(imgForExtraction, img2, dsize, 0.0, 0.0, INTER_CUBIC);
 	int resizeH = img2.rows, resizeW = img2.cols;
 
-	// Í¼ÏñÔöÇ¿
+	// å›¾åƒå¢å¼º
 	Mat lowHigh, lowHighOut;
 	stretchlim(img2, lowHigh, 0.01, 0.99);
 	imadjust(img2, img2, lowHigh, lowHighOut, 1);
@@ -3596,12 +3598,12 @@ void preSeg(Mat img, bool bIntensityReverse, bool bCutTouching,
 		bitwise_and(neighbourCount > 3, bwDBIskeleton, bwBranches);
 		bitwise_and(neighbourCount <= 2, bwDBIskeleton, bwEnds);
 
-		//°Ñ bwDBIskeleton ¸´ÖÆµ½ globalSkeleton
+		//æŠŠ bwDBIskeleton å¤åˆ¶åˆ° globalSkeleton
 		Mat globalSkeletonROI = globalSkeleton(Rect(bbox[1], bbox[0], bbox[3], bbox[2]));
 		bwDBIskeleton.copyTo(globalSkeletonROI, bwDBIskeleton);
 
-		//°Ñ bwDBIskeleton ÖĞÖµÎªÕæµÄË÷ÒıÔÚ thickness ÖĞµÄÊıÖµÈ¡³öÀ´
-		//¼ÆËãÆäÖĞĞ¡ÓÚ 2 µÄÊıÖµ¸öÊı
+		//æŠŠ bwDBIskeleton ä¸­å€¼ä¸ºçœŸçš„ç´¢å¼•åœ¨ thickness ä¸­çš„æ•°å€¼å–å‡ºæ¥
+		//è®¡ç®—å…¶ä¸­å°äº 2 çš„æ•°å€¼ä¸ªæ•°
 		Mat thicknessROI = thickness(Rect(bbox[1], bbox[0], bbox[3], bbox[2]));
 		Mat notBWDBISkeleton;
 		bitwise_not(bwDBIskeleton, notBWDBISkeleton);
@@ -3611,12 +3613,12 @@ void preSeg(Mat img, bool bIntensityReverse, bool bCutTouching,
 
 		///////////////////////
 		if ((countNonZero(bwBranches) > 0 && countNonZero(bwEnds) > 2) || countNonZero(objMask) > singleMaxArea) {
-			//°Ñ·ûºÏÌõ¼şµÄ obj_mask ¸´ÖÆµ½ cluster ÖĞ
+			//æŠŠç¬¦åˆæ¡ä»¶çš„ obj_mask å¤åˆ¶åˆ° cluster ä¸­
 			Mat clusterROI = clusters(Rect(bbox[1], bbox[0], bbox[3], bbox[2]));
 			objMask.copyTo(clusterROI, objMask);
 		}
 		else if (sumThicknessSkelSmallerThan2 > 0) {
-			//°Ñ·ûºÏÌõ¼şµÄ obj_mask ¸´ÖÆµ½ cluster ÖĞ
+			//æŠŠç¬¦åˆæ¡ä»¶çš„ obj_mask å¤åˆ¶åˆ° cluster ä¸­
 			Mat clusterROI = clusters(Rect(bbox[1], bbox[0], bbox[3], bbox[2]));
 			objMask.copyTo(clusterROI, objMask);
 		}
@@ -3701,7 +3703,7 @@ void preSeg(Mat img, bool bIntensityReverse, bool bCutTouching,
 					Mat clusterROI = clusters(Rect(bbox[1], bbox[0], bbox[3], bbox[2]));
 					Mat globalSkeletonROI = globalSkeleton(Rect(bbox[1], bbox[0], bbox[3], bbox[2]));
 
-					//È¥µôÔ­ÏÈµÄ¹Ç¼Ü£¬ÖØĞÂ·ÅÖÃĞÂµÄ¹Ç¼Ü
+					//å»æ‰åŸå…ˆçš„éª¨æ¶ï¼Œé‡æ–°æ”¾ç½®æ–°çš„éª¨æ¶
 					zeroROI.copyTo(clusterROI, objMask);
 					localClusters.copyTo(clusterROI, localClusters);
 					localClusters.copyTo(clusterROI, onesROI);
@@ -3726,7 +3728,7 @@ void preSeg(Mat img, bool bIntensityReverse, bool bCutTouching,
 	dsize = Size(eW, eH);
 	resize(singles, singlesForExtraction, dsize, 0.0, 0.0, INTER_NEAREST);
 
-	// 1217ĞÂÔö
+	// 1217æ–°å¢
 	Mat singlesForCalcArea = Mat::zeros(singlesForExtraction.size(), CV_8UC1);
 	Mat singlesForCalcAreaTmp = singlesForExtraction.clone();
 	for (int i = 0; i < 3; i++) {
@@ -3744,18 +3746,18 @@ void preSeg(Mat img, bool bIntensityReverse, bool bCutTouching,
 	return;
 }
 
-// 55.´ò·Ö
+// 55.æ‰“åˆ†
 float ChromoScore(float avgLength, int singleNum) {
 	float number = (float)singleNum;
-	// ÅäÖÃ¶àÏîÊ½ÏµÊı
+	// é…ç½®å¤šé¡¹å¼ç³»æ•°
 	float score = 0;
 	float a = 1.279;
 	float b1 = 0.774, b2 = 0.221;
 	float c1 = 3.324, c2 = -2.865;
-	//ÊäÈëÊı¾İ¹éÒ»»¯
+	//è¾“å…¥æ•°æ®å½’ä¸€åŒ–
 	float x = avgLength / 3178.7;
 	float y = number / 48;
-	//¼ÆËã´ò·Ö
+	//è®¡ç®—æ‰“åˆ†
 	score = a + b1 * x + b2 * x*x + c1 * y + c2 * y*y;
 	return score;
 }
